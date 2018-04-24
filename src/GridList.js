@@ -1,14 +1,35 @@
 import React from "react";
 import {
-     Card, CardHeader, Dialog, FlatButton, GridList, GridTile, IconButton
+    Card, CardHeader, Dialog, FlatButton, GridList, GridTile, IconButton
 } from "material-ui";
-import StaticHelper from "./StaticHelper";
 import Add from 'material-ui/svg-icons/content/add'
+import moment from "moment";
 
 class FitGridList extends React.Component {
 
+    constructor() {
+        super();
+        this.getLessons();
+    }
+
     state = {
         open: false,
+        lessons: {
+            '2018-04-24': [{
+                'lessonSet': {
+                    'lessonType': {
+                        'name': '',
+                        'image': ''
+                    },
+                    'trainerUser': {
+                        'name': ''
+                    }
+                },
+                'hall': {
+                    'name': ''
+                }
+            }]
+        }
     };
 
 
@@ -20,70 +41,15 @@ class FitGridList extends React.Component {
         this.setState({open: false});
     };
 
-    lessons = [
-        {
-            'title': 'Aerostretching',
-            'trainer': 'Конова',
-            'room': 'Малый зал',
-            'time': '8:00-9:00',
-            'img': 'https://static.wixstatic.com/media/7601f5_c2a45bc4991d41df8152b7e48d724448~mv2.jpg/v1/fill/w_690,h_460,al_c,q_90/file.jpg',
-            'avatar': "https://yt3.ggpht.com/-KXF8hg1XoF8/AAAAAAAAAAI/AAAAAAAAAAA/8-1QnMLf-IU/s240-c-k-no-mo-rj-c0xffffff/photo.jpg",
-
-        },
-        {
-            'title': 'TRX',
-            'trainer': 'Яковлева',
-            'room': 'Малый зал',
-            'time': '9:00-10:00',
-            'img': 'https://www.fitmost.ru/blog/wp-content/uploads/2016/11/trx1-1.jpg',
-            'avatar': "https://s1.1zoom.ru/prev2/501/500373.jpg"
-
-        },
-        {
-            'title': 'Школа шпагата',
-            'trainer': 'Даратонов',
-            'room': 'Большой зал',
-            'time': '10:00-11:00',
-            'img': 'https://www.nastol.com.ua/large/201602/164723.jpg',
-            'avatar': "http://i.playground.ru/i/09/64/16/10/user/avatar.jpg?v1"
-        },
-        {
-            'title': 'Yoga',
-            'trainer': 'Ан Хи',
-            'room': 'Большой зал',
-            'time': '11:00-12:00',
-            'img': 'https://diet-diet.ru/wp-content/uploads/2017/05/kak-zanimatsya-jogoj-i-vypolnyat-asany-pravilno_1489526281-1140x570.jpg',
-            'avatar': ''
-        },
-        {
-            'title': '',
-            'trainer': '',
-            'room': '',
-            'time': '',
-            'img:': '',
-            'avatar': ''
-        },
-        {
-            'title': '',
-            'trainer': '',
-            'room': '',
-            'time': '',
-            'img:': '',
-            'avatar': ''
-        }
-
-    ];
     days = [
-        {'day': 'Понедельник', 'date': '23 апр', 'key': 'mon'},
-        {'day': 'Вторник', 'date': '24 апр', 'key': 'tue'},
-        {'day': 'Среда', 'date': '25 апр', 'key': 'wed'},
-        {'day': 'Четверг', 'date': '26 апр', 'key': 'thu'},
-        {'day': 'Пятница', 'date': '27 апр', 'key': 'fri'},
-        // {'day': 'Суббота', 'date': '28 апр'},
-        // {'day': 'Воскресение', 'date': '29 апр'}
+        {'day': 'Понедельник', 'date': '2018-04-24', 'key': 'mon'},
+        {'day': 'Вторник', 'date': '2018-04-25', 'key': 'tue'},
+        {'day': 'Среда', 'date': '2018-04-26', 'key': 'wed'},
+        {'day': 'Четверг', 'date': '2018-04-27', 'key': 'thu'},
+        {'day': 'Пятница', 'date': '2018-04-28', 'key': 'fri'},
+        // {'day': 'Суббота', 'date': '2018-04-29', 'key': 'sat'},
+        // {'day': 'Воскресение', 'date': '2018-04-30', 'key': 'sun'}
     ];
-
-    justArray = Array(100).fill(null);
 
     styles = {
         root: {
@@ -92,46 +58,53 @@ class FitGridList extends React.Component {
             justifyContent: 'space-around',
         },
         gridList: {
-            width: 1400,
-            height: 950,
+            width: 280,
+            height: 2800,
             overflowY: 'auto',
+            margin:0
         },
+        floatdiv: {
+            marginLeft: 10,
+            display: 'flex'
+            // float: left,left
+        }
     };
     time = 8;
 
 
-    getRandomTile() {
+    getNextTile(lesson) {
         const iconButton = <IconButton>
             <Add color="white" onClick={this.handleOpen}/>
 
         </IconButton>;
-        let lesson = StaticHelper.getRandom(this.lessons);
-        this.time += 1 / 5;
         return (
             <GridTile
-                key={this.time}
-                title={lesson.title}
+                key={lesson.id}
+                title={<span>{lesson.lessonSet.lessonType.name} ({lesson.hall.name})</span>}
                 rows={2}
-                subtitle={<span> <b>{lesson.trainer}</b>  <b>{parseInt(this.time)}:00</b></span>}
+                subtitle={
+                    <span> <b>{lesson.lessonSet.trainerUser.name}</b>  <b>{moment(new Date(lesson.startDateTime)).format('LT')}</b></span>}
                 actionIcon={iconButton}
                 titlePosition="top"
 
             >
 
-                <img src={lesson.img}/>
+                <img src={lesson.lessonSet.lessonType.image}/>
             </GridTile>
         );
     }
 
     render() {
+
+
         const actions = [
             <FlatButton
-                label="Cancel"
+                label="Нет"
                 primary={true}
                 onClick={this.handleClose}
             />,
             <FlatButton
-                label="Submit"
+                label="Согласен"
                 primary={true}
                 keyboardFocused={true}
                 onClick={this.handleClose}
@@ -139,40 +112,67 @@ class FitGridList extends React.Component {
         ];
 
         return (
-            <div>
-                <GridList
-                    cellHeight={80}
-                    style={this.styles.gridList}
-                    cols={5}
-                >
+            <div >
+                <div style={this.styles.floatdiv}>
                     {this.days.map((day) => {
+                        console.log(day);
+                        if (typeof(this.state.lessons[day.date]) != 'object') {
+                            this.state.lessons[day.date] = [];
+                        }
                         return (
-                            <Card key={'card_' + day.key}>
-                                <CardHeader
-                                    title={day.day}
-                                    subtitle={day.date}
-                                />
+                            <GridList
+                                cellHeight={80}
+                                style={this.styles.gridList}
+                                cols={1}
+                            >
+                                <Card key={'card_' + day.key}>
+                                    <CardHeader
+                                        title={day.day}
+                                        subtitle={day.date}
+                                    />
+                                </Card>
 
-                            </Card>
+                                {this.state.lessons[day.date].map((lesson) => {
+                                    return this.getNextTile(lesson);
+                                })}
+                            </GridList>
                         );
                     })}
 
-                    {this.justArray.map((v) => {
-                        return this.getRandomTile();
-                    })}
-
-                </GridList>
+                </div>
                 <Dialog
-                    title="Dialog With Actions"
+                    title="Записаться на занятие"
                     actions={actions}
                     modal={false}
                     open={this.state.open}
                     onRequestClose={this.handleClose}
                 >
-                    The actions in this window were passed in as an array of React objects.
+                    Записываясь на занятие, вы подтверждаете свое присутсвие и прочая фигня.
                 </Dialog>
             </div>
         );
+    }
+
+    getLessons() {
+        return fetch('http://127.0.0.1:8000/client/lesson/')
+            .then(function (response) {
+                // The response is a Response instance.
+                // You parse the data into a useable format using `.json()`
+                return response.json();
+            }).then((data) => {
+                let newData = {};
+                data.map((element) => {
+                    let day = moment(new Date(element.startDateTime)).format('YYYY-MM-DD');
+                    if (typeof(newData[day]) != 'object') {
+                        newData[day] = [];
+                    }
+                    newData[day].push(element);
+                });
+                this.setState({'lessons': newData});
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 }
 

@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import './index.css';
+import './index.css'
+import FitTable from "./FitTable";
 import FitGridList from "./GridList";
 
 class Fit extends React.Component {
