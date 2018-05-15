@@ -28,12 +28,12 @@ class FitAppBar extends React.Component {
         drawerOpen: false,
         loginOpen: false,
         codeSent: false,
-
+        phoneFrozen: false,
         phone: {
             errorText: '',
             valid: false,
-            frozen: false
-        }
+        },
+        code: ''
     }
 
     handleLoginOpen = () => {
@@ -53,12 +53,16 @@ class FitAppBar extends React.Component {
     }
 
     handleCodeSending = () => {
-        this.setState({codeSent: true, phone: {frozen: true}});
+        this.setState({codeSent: true, phoneFrozen: true});
+        this.requestCode();
     }
 
     handleCodeConfirmation = () => {
-        this.setState({loginOpen: false})
-        this.props.handleLogin();
+        this.props.handleLogin({
+            phone: this.state.phone.phoneNumber,
+            code: this.state.code
+        });
+        this.setState({loginOpen: false, phoneFrozen: false, codeSent: false});
     }
 
     handleLogout = () => {
@@ -111,8 +115,8 @@ class FitAppBar extends React.Component {
 
                     <Card>
                         <CardHeader
-                            title="Рудова Наталья"
-                            subtitle="+7(999)9999999"
+                            title={this.props.user.user.name}
+                            subtitle={this.props.user.user.phone}
                             avatar="https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20141230%2F30%2F3151100%2F397%2F236x236xccdffb5405c96366d53d0af7.jpg%2F300%2F600&twidth=300&theight=300&qlt=80&res_format=jpg&op=r"
                         />
 
@@ -154,6 +158,7 @@ class FitAppBar extends React.Component {
                 <TextField
                     hintText="0000"
                     floatingLabelText="Код подтверждения"
+                    onChange={this.onChangeCode.bind(this)}
                     disabled={!this.state.codeSent}
                 />
                 <FlatButton
@@ -166,6 +171,11 @@ class FitAppBar extends React.Component {
         );
     }
 
+    onChangeCode(event) {
+        this.setState({
+            code: event.target.value
+        });
+    }
 
     onChangePhone(event) {
         if (event.target.value.match('^((\\+7)+\\([0-9]{3}\\)([0-9]){7})$')) {
@@ -173,7 +183,7 @@ class FitAppBar extends React.Component {
                 phone: {
                     errorText: '',
                     phoneNumber: event.target.value,
-                    valid: true
+                    valid: true,
                 }
             })
         } else {
@@ -181,7 +191,7 @@ class FitAppBar extends React.Component {
                 phone: {
                     errorText: 'Формат телефона: +7(999)0000000',
                     phoneNumber: event.target.value,
-                    valid: false
+                    valid: false,
                 }
             })
         }
@@ -194,10 +204,30 @@ class FitAppBar extends React.Component {
                 errorText={this.state.phone.errorText}
                 onChange={this.onChangePhone.bind(this)}
                 floatingLabelText="Введите номер телефона"
-                disabled={this.state.phone.frozen}
+                disabled={this.state.phoneFrozen}
             />
 
         );
+    }
+
+    requestCode() {
+        if (this.state.phone.valid === true) {
+            fetch(this.props.config.url.host + this.props.config.url.requestCodeMethod,
+                {
+                    'method': 'POST',
+                    'headers': {'Accept': 'application/json'},
+                    'body': JSON.stringify({
+                        "phone": this.state.phone.phoneNumber
+                    })
+                }
+            ).then(function (response) {
+                return response.json();
+            }).then((data) => {
+                console.log(data);
+            }).catch((error) => {
+                console.error(error);
+            });
+        }
     }
 }
 
