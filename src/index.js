@@ -4,17 +4,19 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import './index.css'
-import FitTable from "./FitTable";
-import FitGridList from "./GridList";
+import FitGridList from "./FitGridList";
+import FitAppBar from "./AppBar/FitAppBar";
+import {Parallax} from "react-parallax";
+import LogoBlock from "./AppBar/LogoBlock";
+import FitAuthContainer from "./FitAuthContainer";
 
 class Fit extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider
-                muiTheme={getMuiTheme(darkBaseTheme)}>
-                {/*<MyAwesomeReactComponent />*/}
-                <FitGridList/>
+
+            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+                <FitAuthContainer/>
             </MuiThemeProvider>
         );
     }
