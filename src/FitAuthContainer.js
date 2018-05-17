@@ -76,6 +76,7 @@ class FitAuthContainer extends Component {
                 />
                 <LogoBlock/>
                 <FitGridList
+                    config={this.config}
                     user={this.state}
                 />
                 <Snackbar

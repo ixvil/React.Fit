@@ -49,3 +49,12 @@ ol, ul {
     margin-left: 20px;
 }
 
+.phoneDiv svg {
+    position: relative;
+    top: 5px;
+}
+
+.instDiv svg {
+    position: relative;
+    top: -2px;
+}
