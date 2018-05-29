@@ -14,7 +14,7 @@ class FitAuthContainer extends Component {
 
     config = {
         url: {
-            'host': 'http://127.0.0.1:8000/client/',
+            'host': '//api.stretchandgo.ru/client/',
             'lessonsMethod': 'lesson/',
             'lessonUserMethod': 'lessonUser/',
             'requestCodeMethod': 'auth/requestCode/',
