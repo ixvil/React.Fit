@@ -4,6 +4,7 @@ import {
 } from "material-ui";
 import Add from 'material-ui/svg-icons/content/add'
 import moment from "moment";
+import ru from "moment/locale/ru";
 
 class FitGridList extends React.Component {
 
@@ -15,7 +16,7 @@ class FitGridList extends React.Component {
 
     constructor() {
         super();
-
+        moment.locale('ru');
         this.fillDays();
         this.getLessons();
     }
