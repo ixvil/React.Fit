@@ -1,10 +1,18 @@
 import React from "react";
 import {
-    Card, CardHeader, Dialog, FlatButton, GridList, GridTile, IconButton
-} from "material-ui";
-import Add from 'material-ui/svg-icons/content/add'
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
+    Button,
+    GridList,
+    GridListTile,
+    IconButton,
+    GridListTileBar
+} from "@material-ui/core";
+import Add from '@material-ui/icons/Add'
 import moment from "moment";
-import ru from "moment/locale/ru";
 
 class FitGridList extends React.Component {
 
@@ -58,7 +66,6 @@ class FitGridList extends React.Component {
     };
 
     handleOpen = (lesson) => {
-        console.log(lesson);
         this.setState({open: true, dialog: lesson});
     };
 
@@ -99,13 +106,16 @@ class FitGridList extends React.Component {
             flexWrap: 'wrap',
             justifyContent: 'space-around'
         },
-
+        headerGridList: {
+            background: 'rgb(72, 72, 72)'
+        },
         gridList: {
             display: 'flex',
             // flexWrap: 'nowrap',
             overflowX: 'auto',
             overflowY: 'auto',
             margin: 0,
+            padding: 0
             // width: 1400,
         },
         gridTile: {
@@ -121,22 +131,21 @@ class FitGridList extends React.Component {
 
     getEmptyTile() {
         return (
-            <GridTile
-                key=''
+            <GridListTile
+                key={Math.random()}
                 title=''
                 rows={2}
                 subtitle=''
-                titlePosition="top"
             >
-                <img src=''/>
+                <img src='' alt=''/>
 
-            </GridTile>
+            </GridListTile>
         );
     }
 
     getNextTile(lesson) {
         const iconButton = <IconButton>
-            <Add color="white" onClick={() => {
+            <Add onClick={() => {
                 this.handleOpen(lesson);
             }}/>
 
@@ -150,55 +159,63 @@ class FitGridList extends React.Component {
 
 
         return (
-            <GridTile
+            <GridListTile
                 key={'key_' + lesson.id}
-                title={<span>{lesson.lessonSet.lessonType.name} ({lesson.hall.name}) </span>}
                 rows={3}
                 id={lesson.id}
-                subtitle={
-                    <span>
+
+            >
+
+                <img src={lesson.lessonSet.lessonType.image} alt=''/>
+                <GridListTileBar
+                    title={<span>{lesson.lessonSet.lessonType.name} ({lesson.hall.name}) </span>}
+                    titlePosition="top"
+                    actionIcon={canApply ? iconButton : null}
+
+                    subtitle={
+                        <span>
                         <b>{lesson.lessonSet.trainerUser.name}</b>
                         <b> {moment(new Date(lesson.startDateTime)).format('LT')}
                         </b> {freePlacesText}</span>}
-
-                actionIcon={canApply ? iconButton : null}
-                titlePosition="top"
-
-            >
-                <img src={lesson.lessonSet.lessonType.image}/>
-            </GridTile>
+                />
+            </GridListTile>
         );
     }
 
     render() {
 
         let buttonLabel = "Согласен";
-        if(this.props.user.login === false ){
+        if (this.props.user.login === false) {
             buttonLabel = "Авторизуйтесь, что бы записаться"
         }
 
         const actions = [
-            <FlatButton
-                label={buttonLabel}
-                primary={true}
-                keyboardFocused={true}
+            <Button
                 onClick={this.handleApplication}
                 disabled={!this.props.user.login}
-            />,
+                key={"button_apply_" + this.state.dialog.id}
+            >{buttonLabel}</Button>,
         ];
         let dialog = <Dialog
-            title={"Записаться на " +
-            this.state.dialog.lessonSet.lessonType.name + "?"}
-            actions={actions}
-            modal={false}
+            fullWidth={true}
             open={this.state.open}
-            onRequestClose={this.handleClose}
+            onClose={this.handleClose}
         >
-            {this.state.dialog.lessonSet.lessonType.name} проходит в {this.state.dialog.hall.name}. <br/>
-            Время проведение занятия: {moment(new Date(this.state.dialog.startDateTime)).format('LT DD.MM.YYYY')} <br/>
-            Тренер: {this.state.dialog.lessonSet.trainerUser.name} <br/>
-            Осталось: {this.state.dialog.lessonSet.usersLimit - this.state.dialog.lessonUsers.length} мест
-            <br/>
+            <DialogTitle>{"Записаться на " + this.state.dialog.lessonSet.lessonType.name + "?"}</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    {this.state.dialog.lessonSet.lessonType.name} проходит в {this.state.dialog.hall.name}. <br/>
+                    Время проведение
+                    занятия: {moment(new Date(this.state.dialog.startDateTime)).format('LT DD.MM.YYYY')}
+                    <br/>
+                    Тренер: {this.state.dialog.lessonSet.trainerUser.name} <br/>
+                    Осталось: {this.state.dialog.lessonSet.usersLimit - this.state.dialog.lessonUsers.length} мест
+                    <br/>
+                </DialogContentText>
+                <DialogActions>
+                    {actions}
+                </DialogActions>
+            </DialogContent>
         </Dialog>;
 
         return (
@@ -212,7 +229,7 @@ class FitGridList extends React.Component {
     }
 
     getGridList() {
-        if (Object.keys(this.state.lessons).length == 0) {
+        if (Object.keys(this.state.lessons).length === 0) {
             return;
         }
         return (
@@ -220,17 +237,22 @@ class FitGridList extends React.Component {
                 cellHeight={80}
                 style={this.styles.gridList}
                 cols={this.days.length}
+                key={"grid_list"}
+                /*{this.days.length}*/
             >
                 {/*<Subheader>December</Subheader>*/}
                 {this.days.map((day) => {
-                    console.log('day+');
                     return (
-                        <Card key={'card_' + day.key}>
-                            <CardHeader
+                        <GridListTile
+                            key={'card_' + day.key}
+                        >
+                            <GridListTileBar
+                                style={this.styles.headerGridList}
                                 title={day.day}
                                 subtitle={day.date}
+
                             />
-                        </Card>
+                        </GridListTile>
                     );
                 })}
                 {this.getCards()}
@@ -249,15 +271,16 @@ class FitGridList extends React.Component {
             let k = 0;
             this.days.map((day) => {
                 let date = day.date;
-                if (typeof tempLessonsArray[date] != 'object') {
+                if (typeof tempLessonsArray[date] !== 'object') {
                     tempLessonsArray[date] = Object.assign([], this.state.lessons[day.date]);
                 }
-                if (typeof tempLessonsArray[date] == 'object' && tempLessonsArray[date].length != 0) {
+                if (typeof tempLessonsArray[date] === 'object' && tempLessonsArray[date].length !== 0) {
                     array.push(tempLessonsArray[date].shift());
                 } else {
                     array.push(null);
                     k++;
                 }
+                return null;
             });
             if (k > this.days.length - 1) {
                 b = false
@@ -274,12 +297,10 @@ class FitGridList extends React.Component {
     }
 
     getLessons() {
-        console.log('tuck');
         return fetch(this.url.host + this.url.lessonsMethod)
             .then(function (response) {
                 // The response is a Response instance.
                 // You parse the data into a usable format using `.json()`
-                console.log('tack');
                 return response.json();
 
             }).then((data) => {
@@ -295,10 +316,11 @@ class FitGridList extends React.Component {
         data.map((element) => {
             let day = moment(new Date(element.startDateTime)).format('YYYY-MM-DD');
 
-            if (typeof(newData[day]) != 'object') {
+            if (typeof(newData[day]) !== 'object') {
                 newData[day] = [];
             }
             newData[day].push(element);
+            return null;
         });
         setTimeout(() => {
             this.setState({'lessons': newData, 'open': false})

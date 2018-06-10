@@ -1,17 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import {
+    MuiThemeProvider,
+    createMuiTheme
+} from '@material-ui/core/styles';
+
 import './index.css'
 import FitAuthContainer from "./FitAuthContainer";
 
 class Fit extends React.Component {
 
     render() {
+
+        let darkBaseTheme = createMuiTheme({
+            palette: {
+                type: 'dark',
+            },
+        });
         return (
 
-            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            <MuiThemeProvider theme={darkBaseTheme}>
                 <FitAuthContainer/>
             </MuiThemeProvider>
         );

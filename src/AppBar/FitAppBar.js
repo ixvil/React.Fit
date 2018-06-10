@@ -1,16 +1,17 @@
 import * as React from "react/cjs/react.development";
 import {
-    Card, CardHeader, CardText, Dialog, Divider, Drawer,
-    FlatButton,
-    IconButton,
+    Avatar,
+    Card, CardHeader, CardContent,
+    Dialog, DialogContent, DialogTitle,
+    Divider, Drawer,
+    IconButton, Button,
     MenuItem, TextField,
-    Toolbar,
-    ToolbarGroup,
-    ToolbarTitle
-} from "material-ui";
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
-import ArrowBack from 'material-ui/svg-icons/navigation/arrow-back';
-import Person from 'material-ui/svg-icons/social/person'
+    Toolbar, AppBar,
+    Typography
+} from "@material-ui/core";
+import Menu from '@material-ui/icons/Menu';
+import ArrowBack from '@material-ui/icons/ArrowBack';
+import Person from '@material-ui/icons/Person'
 
 
 class FitAppBar extends React.Component {
@@ -22,6 +23,32 @@ class FitAppBar extends React.Component {
             justifyContent: 'flex-end',
             padding: '0 8px',
         },
+        root: {
+            flexGrow: 1,
+        },
+        flex: {
+            flex: 1,
+        },
+        menuButton: {
+            marginLeft: -12,
+            marginRight: 20,
+        },
+        textFieldDiv: {
+            width: '400px',
+            float: 'left'
+        },
+        loginDialogButtonDiv: {
+            width: '150px',
+            float: 'left',
+            marginTop: '20px'
+        },
+        divider: {
+            width: '100%',
+            height: '1px',
+            float: 'left'
+        }
+
+
     }
 
     state = {
@@ -32,6 +59,7 @@ class FitAppBar extends React.Component {
         phone: {
             errorText: '',
             valid: false,
+            phoneNumber: '+7('
         },
         code: ''
     }
@@ -73,8 +101,12 @@ class FitAppBar extends React.Component {
     render() {
 
         let icon =
-            <IconButton onClick={this.handleDrawerOpen}>
-                <NavigationMenu/>
+            <IconButton
+                onClick={this.handleDrawerOpen}
+                color="inherit"
+                aria-label="Menu"
+            >
+                <Menu/>
             </IconButton>;
 
         if (this.props.user.login === false) {
@@ -85,15 +117,18 @@ class FitAppBar extends React.Component {
 
 
         return (
-            <div>
-                <Toolbar style={{backgroundColor: "#484848"}}>
-                    <ToolbarGroup firstChild={true}>
-                        {icon}
-                        <ToolbarTitle text="Stretch&GO"/>
-                    </ToolbarGroup>
-                    {this.getDrawer()}
+            <div className={this.classes.root}>
+                <AppBar position="static">
+                    <Toolbar style={{backgroundColor: "#484848"}}>
 
-                </Toolbar>
+                        {icon}
+                        <Typography variant="title">Stretch&GO</Typography>
+
+                        {this.getDrawer()}
+                        {this.getLoginDialog()}
+
+                    </Toolbar>
+                </AppBar>
 
             </div>
 
@@ -103,12 +138,11 @@ class FitAppBar extends React.Component {
     getDrawer() {
         return (
             <Drawer
-                docked={false}
-                width={300}
                 open={this.state.drawerOpen}
+                variant="persistent"
                 // onRequestChange={(open) => this.setState({open})}
             >
-                <div className={this.classes.drawerHeader}>
+                <div>
                     <IconButton onClick={this.handleDrawerClose}>
                         <ArrowBack/>
                     </IconButton>
@@ -117,13 +151,18 @@ class FitAppBar extends React.Component {
                         <CardHeader
                             title={this.props.user.user.name}
                             subtitle={this.props.user.user.phone}
-                            avatar="https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20141230%2F30%2F3151100%2F397%2F236x236xccdffb5405c96366d53d0af7.jpg%2F300%2F600&twidth=300&theight=300&qlt=80&res_format=jpg&op=r"
+                            avatar={
+                                <Avatar
+                                    src={"https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20141230%2F30%2F3151100%2F397%2F236x236xccdffb5405c96366d53d0af7.jpg%2F300%2F600&twidth=300&theight=300&qlt=80&res_format=jpg&op=r"}
+                                />
+                            }
                         />
-
-                        <CardText>
-                            Свободных занятий: 6 <br/>
-                            Бонусных баллов: 500
-                        </CardText>
+                        <CardContent>
+                            <Typography>
+                                Свободных занятий: 6 <br/>
+                                Бонусных баллов: 500
+                            </Typography>
+                        </CardContent>
                     </Card>
                 </div>
                 <Divider/>
@@ -131,7 +170,6 @@ class FitAppBar extends React.Component {
                 <MenuItem>Купить абонемент</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.handleLogout}>Выход</MenuItem>
-                {this.getLoginDialog()}
             </Drawer>
 
         );
@@ -139,34 +177,39 @@ class FitAppBar extends React.Component {
 
     getLoginDialog() {
 
-
         return (
             <Dialog
-                title={"Авторизация"}
-                modal={false}
                 open={this.state.loginOpen}
-                onRequestClose={this.handleLoginClose}
-                autoDetectWindowHeight={true}
+                onClose={this.handleLoginClose}
+                fullWidth
             >
-                {this.getPhoneField()}
-                <FlatButton
-                    label={"Получить код"}
-                    disabled={!this.state.phone.valid}
-                    onClick={this.handleCodeSending}
-                />
-                <br/>
-                <TextField
-                    hintText="0000"
-                    floatingLabelText="Код подтверждения"
-                    onChange={this.onChangeCode.bind(this)}
-                    disabled={!this.state.codeSent}
-                />
-                <FlatButton
-                    label={"Подтвердить"}
-                    disabled={!this.state.codeSent}
-                    onClick={this.handleCodeConfirmation}
-                />
-
+                <DialogTitle id="form-dialog-title">{"Авторизация"}</DialogTitle>
+                <DialogContent>
+                    <div style={this.classes.textFieldDiv}>
+                        {this.getPhoneField()}
+                    </div>
+                    <div style={this.classes.loginDialogButtonDiv}>
+                        <Button
+                            disabled={!this.state.phone.valid}
+                            onClick={this.handleCodeSending}
+                        >Получить код</Button>
+                    </div>
+                    <div style={this.classes.divider}></div>
+                    <div style={this.classes.textFieldDiv}>
+                        <TextField
+                            label="Код подтверждения"
+                            onChange={this.onChangeCode.bind(this)}
+                            disabled={!this.state.codeSent}
+                            fullWidth
+                        />
+                    </div>
+                    <div style={this.classes.loginDialogButtonDiv}>
+                        <Button
+                            disabled={!this.state.codeSent}
+                            onClick={this.handleCodeConfirmation}
+                        >Подтвердить</Button>
+                    </div>
+                </DialogContent>
             </Dialog>
         );
     }
@@ -178,33 +221,60 @@ class FitAppBar extends React.Component {
     }
 
     onChangePhone(event) {
-        if (event.target.value.match('^((\\+7)+\\([0-9]{3}\\)([0-9]){7})$')) {
+        let formatedValue = this.formatPhone(event.target.value)
+        if (formatedValue.match('^((\\+7)+\\([0-9]{3}\\)([0-9]){7})$')) {
             this.setState({
                 phone: {
                     errorText: '',
-                    phoneNumber: event.target.value,
+                    phoneNumber: formatedValue,
                     valid: true,
                 }
             })
         } else {
+
             this.setState({
                 phone: {
                     errorText: 'Формат телефона: +7(999)0000000',
-                    phoneNumber: event.target.value,
+                    phoneNumber: formatedValue,
                     valid: false,
                 }
             })
         }
     }
 
+    formatPhone(value) {
+        let newValue = '+7(';
+        let numRegexp = /[0-9]/ig;
+        let number;
+        let i = 3;
+        let devNull = numRegexp.exec(value);
+
+        while (number = numRegexp.exec(value)) {
+
+            if (i === 6) {
+                newValue += ')';
+            }
+
+            if (i < 13 && i !== 0) {
+                newValue += number;
+            }
+            i++;
+        }
+
+        return newValue;
+
+    }
+
     getPhoneField() {
         return (
             <TextField
-                hintText="+7(999)0000000"
-                errorText={this.state.phone.errorText}
+                helperText={this.state.phone.errorText ? this.state.phone.errorText : false}
+                error={this.state.phone.errorText ? true : false}
                 onChange={this.onChangePhone.bind(this)}
-                floatingLabelText="Введите номер телефона"
+                label="Введите номер телефона"
                 disabled={this.state.phoneFrozen}
+                value={this.state.phone.phoneNumber}
+                fullWidth
             />
 
         );

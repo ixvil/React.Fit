@@ -3,11 +3,11 @@ import React from "react";
 import FitAppBar from "./AppBar/FitAppBar";
 import LogoBlock from "./AppBar/LogoBlock";
 import FitGridList from "./FitGridList";
-import {Snackbar} from "material-ui";
+import {Snackbar} from "@material-ui/core";
 
 class FitAuthContainer extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
     }

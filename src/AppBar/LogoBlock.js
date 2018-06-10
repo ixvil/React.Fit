@@ -1,8 +1,8 @@
 import {Component} from "react";
 import React from "react";
-import Phone from 'material-ui/svg-icons/communication/phone';
+import Phone from '@material-ui/icons/Phone';
 import FaInstagram from 'react-icons/lib/fa/instagram'
-import {FlatButton, GridList, GridTile} from "material-ui";
+import {Button, GridList, GridListTile} from "@material-ui/core";
 
 class LogoBlock extends Component {
     render() {
@@ -47,7 +47,7 @@ class LogoBlock extends Component {
                     cellHeight={250}
                     style={{marginBottom: 100}}
                 >
-                    <GridTile cols={textCols}>
+                    <GridListTile cols={textCols}>
                         <div
                             align="left"
                             style={styles.f}
@@ -58,12 +58,12 @@ class LogoBlock extends Component {
                             <br/>
                             TRX
                             <br/>
-                            <FlatButton primary={true} label="Записаться на занятие"/>
-                            <FlatButton secondary={true} label="Купить абонемент онлайн"/>
+                            <Button color="primary" >Записаться на занятие</Button>
+                            <Button color="secondary" >Купить абонемент онлайн</Button>
                         </div>
-                    </GridTile>
-                    <GridTile><img style={{width: 250}} src={"/strlogo_black.jpg"}/> </GridTile>
-                    <GridTile cols={textCols}>
+                    </GridListTile>
+                    <GridListTile><img style={{width: 250}} src={"/strlogo_black.jpg"} alt={"Stretch & GO"}/> </GridListTile>
+                    <GridListTile cols={textCols}>
                         <div
                             align="left"
                             style={styles.s}
@@ -75,50 +75,17 @@ class LogoBlock extends Component {
                             <br/>
                             <div style={{verticalAlign: 'middle'}} className='phoneDiv'>
 
-                                <Phone color='#000000'/> <span style={{fontSize: 20}}>+7(906)018-00-01</span>
+                                <Phone /> <span style={{fontSize: 20}}>+7(906)018-00-01</span>
                             </div>
                             <div className='instDiv'>
-                                <FaInstagram color='#000000'/> <span style={{fontSize: 24}}>@stretchandgo</span>
+                                <FaInstagram /> <span style={{fontSize: 24}}>@stretchandgo</span>
 
                             </div>
 
                         </div>
-                    </GridTile>
+                    </GridListTile>
 
                 </GridList>
-                {/*<img src={"/logo.jpg"}/> <br/>*/}
-                {/*<div*/}
-                {/*align="left"*/}
-                {/*style={styles.f}*/}
-                {/*>*/}
-                {/*Стретчинг*/}
-                {/*<br/>*/}
-                {/*Силовые тренировки*/}
-                {/*<br/>*/}
-                {/*TRX*/}
-
-                {/*</div>*/}
-                {/*<div*/}
-                {/*align="left"*/}
-                {/*style={styles.s}*/}
-
-                {/*>*/}
-                {/*г. Домодедово,*/}
-                {/*Племхозский пр. 1*/}
-                {/*<br/>*/}
-                {/*ТЦ Западный, 2 этаж*/}
-                {/*<br/>*/}
-                {/*<div style={{verticalAlign: 'middle'}} className='phoneDiv'>*/}
-
-                {/*<Phone color='#000000'/> <span style={{fontSize: 20}}>+7(906)018-00-01</span>*/}
-                {/*</div>*/}
-                {/*<div className='instDiv'>*/}
-                {/*<FaInstagram color='#000000'/> <span style={{fontSize: 24}}>@stretchandgo</span>*/}
-
-                {/*</div>*/}
-                {/*<br/>*/}
-
-                {/*</div>*/}
 
             </div>
         );
