@@ -14,11 +14,12 @@ class FitAuthContainer extends Component {
 
     config = {
         url: {
-            'host': '//api.stretchandgo.ru/client/',
+            'host': process.env.REACT_APP_API_HOST,
             'lessonsMethod': 'lesson/',
             'lessonUserMethod': 'lessonUser/',
             'requestCodeMethod': 'auth/requestCode/',
             'loginMethod': 'auth/login/',
+            'tokenLoginMethod': 'auth/tokenLogin/'
 
         }
     }
@@ -26,7 +27,8 @@ class FitAuthContainer extends Component {
     state = {
         login: false,
         user: {},
-        snackOpen: false
+        snackOpen: false,
+        tokenAuthTried: false
     };
 
     handleLogin(phone) {
@@ -47,6 +49,8 @@ class FitAuthContainer extends Component {
             this.setState({login: data.status, snackOpen: true});
             if (typeof data.user === 'object') {
                 this.setState({'user': data.user});
+                localStorage.setItem('authToken', data.token);
+                localStorage.setItem('authUserId', data.user.id);
             } else {
 
             }
@@ -60,12 +64,42 @@ class FitAuthContainer extends Component {
         this.setState({login: false});
     }
 
+    tokenAuth() {
+        this.setState({'tokenAuthTried': true});
+        fetch(this.config.url.host + this.config.url.tokenLoginMethod,
+            {
+                'method': 'POST',
+                'headers': {'Accept': 'application/json'},
+                'body': JSON.stringify({
+                    "token": localStorage.getItem('authToken'),
+                    "userId": localStorage.getItem('authUserId')
+                })
+            }
+        ).then(function (response) {
+            console.log(response);
+            return response.json();
+        }).then((data) => {
+            this.setState({login: data.status, snackOpen: true});
+            if (typeof data.user === 'object') {
+                this.setState({'user': data.user});
+            } else {
+
+            }
+
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+
     render() {
         let snackMessage = 'Успешная авторизация';
         if (this.state.login !== true) {
             snackMessage = 'Авторизация не прошла (Введен неверный код)';
         }
 
+        if (this.state.tokenAuthTried !== true) {
+            this.tokenAuth();
+        }
         return (
             <div>
                 <FitAppBar

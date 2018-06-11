@@ -17,7 +17,7 @@ import moment from "moment";
 class FitGridList extends React.Component {
 
     url = {
-        'host': '//api.stretchandgo.ru/client/',
+        'host': process.env.REACT_APP_API_HOST,
         'lessonsMethod': 'lesson/',
         'lessonUserMethod': 'lessonUser/'
     }
@@ -62,6 +62,7 @@ class FitGridList extends React.Component {
             startDateTime: '',
             id: 0
         },
+        phone: {},
         lessons: {}
     };
 
