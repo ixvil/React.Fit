@@ -4,6 +4,7 @@ import FitAppBar from "./AppBar/FitAppBar";
 import LogoBlock from "./AppBar/LogoBlock";
 import FitGridList from "./FitGridList";
 import {Snackbar} from "@material-ui/core";
+import FitSnackBarContentWrapper from "./Tools/FitSnackBarContentWrapper";
 
 class FitAuthContainer extends Component {
     constructor(props) {
@@ -109,18 +110,34 @@ class FitAuthContainer extends Component {
                     config={this.config}
                 />
                 <LogoBlock/>
+
                 <FitGridList
                     config={this.config}
                     user={this.state}
                 />
+
                 <Snackbar
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                    }}
                     open={this.state.snackOpen}
-                    message={snackMessage}
-                    autoHideDuration={4000}
-                    // onRequestClose={this.setState({snackOpen: false})}
-                />
+                    autoHideDuration={6000}
+                    onClose={this.snackHandleClose}
+                >
+                    <FitSnackBarContentWrapper
+                        onClose={this.snackHandleClose}
+                        variant="success"
+                        message={snackMessage}
+                    />
+                </Snackbar>
+
             </div>
         );
+    }
+
+    snackHandleClose = (event, reason) => {
+        this.setState({snackOpen: false});
     }
 }
 

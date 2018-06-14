@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import Add from '@material-ui/icons/Add'
 import moment from "moment";
+import ru from 'moment/locale/ru'
 
 class FitGridList extends React.Component {
 
@@ -22,8 +23,8 @@ class FitGridList extends React.Component {
         'lessonUserMethod': 'lessonUser/'
     }
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         moment.locale('ru');
         this.fillDays();
         this.getLessons();
@@ -32,7 +33,7 @@ class FitGridList extends React.Component {
     fillDays() {
         let today = new Date();
         let todayMoment = moment(today);
-        const days = Math.round(window.innerWidth / 350);
+        const days = 7; //Math.round(window.innerWidth / 350);
         for (let i = 0; i < days; i++) {
             let day = {
                 'day': todayMoment.format('dddd'),
@@ -135,7 +136,7 @@ class FitGridList extends React.Component {
             <GridListTile
                 key={Math.random()}
                 title=''
-                rows={2}
+                rows={1}
                 subtitle=''
             >
                 <img src='' alt=''/>
@@ -162,11 +163,9 @@ class FitGridList extends React.Component {
         return (
             <GridListTile
                 key={'key_' + lesson.id}
-                rows={3}
+                rows={2}
                 id={lesson.id}
-
             >
-
                 <img src={lesson.lessonSet.lessonType.image} alt=''/>
                 <GridListTileBar
                     title={<span>{lesson.lessonSet.lessonType.name} ({lesson.hall.name}) </span>}

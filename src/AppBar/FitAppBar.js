@@ -159,8 +159,8 @@ class FitAppBar extends React.Component {
                         />
                         <CardContent>
                             <Typography>
-                                Свободных занятий: 6 <br/>
-                                Бонусных баллов: 500
+                                Свободных занятий: 0 <br/>
+                                Бонусных баллов: 0
                             </Typography>
                         </CardContent>
                     </Card>
