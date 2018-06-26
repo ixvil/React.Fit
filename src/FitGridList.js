@@ -11,9 +11,10 @@ import {
     IconButton,
     GridListTileBar
 } from "@material-ui/core";
-import Add from '@material-ui/icons/Add'
+import {Add, Done} from '@material-ui/icons'
 import moment from "moment";
 import ru from 'moment/locale/ru'
+import ArrayTools from "./Tools/ArrayTools";
 
 class FitGridList extends React.Component {
 
@@ -33,7 +34,7 @@ class FitGridList extends React.Component {
     fillDays() {
         let today = new Date();
         let todayMoment = moment(today);
-        const days = 7; //Math.round(window.innerWidth / 350);
+        const days = 7;//Math.round(window.innerWidth / 250);
         for (let i = 0; i < days; i++) {
             let day = {
                 'day': todayMoment.format('dddd'),
@@ -76,24 +77,28 @@ class FitGridList extends React.Component {
     };
 
     handleApplication = () => {
-        if (this.state.phone.valid === true) {
+
+        if (this.props.user.login !== false) {
             fetch(this.url.host + this.url.lessonUserMethod,
                 {
                     'method': 'POST',
+                    'credentials': 'include',
                     'headers': {'Accept': 'application/json'},
                     'body': JSON.stringify({
                         "state": this.state
                     })
                 }
             ).then(function (response) {
-                if (!response.ok) {
-                    alert('Вы уже записаны');
-                    throw new Error();
-                }
                 return response.json();
             }).then((data) => {
-                alert('Вы успешно записаны на занятие');
-                this.setLessons(data);
+
+                if (typeof data.error !== "undefined") {
+                    alert(data.error);
+                } else {
+                    alert('Ура! Вы записаны за занятие');
+                    this.setLessons(data.lessons);
+                    this.setState({'user': data.user});
+                }
             }).catch((error) => {
                 console.error(error);
             });
@@ -146,7 +151,7 @@ class FitGridList extends React.Component {
     }
 
     getNextTile(lesson) {
-        const iconButton = <IconButton>
+        let iconButton = <IconButton>
             <Add onClick={() => {
                 this.handleOpen(lesson);
             }}/>
@@ -159,6 +164,12 @@ class FitGridList extends React.Component {
             : (<b> (Мест нет)</b>)
         ;
 
+        if (this.checkApplied(this.props.user.user.id, lesson.lessonUsers)) {
+            iconButton = <IconButton>
+                <Done style={{"color": "#00FF00"}}/>
+
+            </IconButton>;
+        }
 
         return (
             <GridListTile
@@ -168,15 +179,15 @@ class FitGridList extends React.Component {
             >
                 <img src={lesson.lessonSet.lessonType.image} alt=''/>
                 <GridListTileBar
-                    title={<span>{lesson.lessonSet.lessonType.name} ({lesson.hall.name}) </span>}
+                    title={<span>{lesson.lessonSet.lessonType.name} </span>}
                     titlePosition="top"
                     actionIcon={canApply ? iconButton : null}
 
                     subtitle={
                         <span>
-                        <b>{lesson.lessonSet.trainerUser.name}</b>
+                        <b>{lesson.hall.name}</b>
                         <b> {moment(new Date(lesson.startDateTime)).format('LT')}
-                        </b> {freePlacesText}</span>}
+                        </b> <br/>{freePlacesText}</span>}
                 />
             </GridListTile>
         );
@@ -297,7 +308,11 @@ class FitGridList extends React.Component {
     }
 
     getLessons() {
-        return fetch(this.url.host + this.url.lessonsMethod)
+        return fetch(this.url.host + this.url.lessonsMethod,
+            {
+                // 'method': 'POST',
+                'credentials': 'include',
+            })
             .then(function (response) {
                 // The response is a Response instance.
                 // You parse the data into a usable format using `.json()`
@@ -338,6 +353,17 @@ class FitGridList extends React.Component {
     }
 
 
+    checkApplied(id, lessonUsers) {
+        let applied = false;
+        let applies = lessonUsers.map((lessonUser) => {
+            return id === lessonUser.user.id;
+        })
+        applies.push(0);
+
+        applied = applies.reduce(ArrayTools.sum);
+
+        return applied;
+    }
 }
 
 

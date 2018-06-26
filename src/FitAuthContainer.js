@@ -5,10 +5,14 @@ import LogoBlock from "./AppBar/LogoBlock";
 import FitGridList from "./FitGridList";
 import {Snackbar} from "@material-ui/core";
 import FitSnackBarContentWrapper from "./Tools/FitSnackBarContentWrapper";
+import Cookies from 'universal-cookie'
 
 class FitAuthContainer extends Component {
+    cookies;
+
     constructor(props) {
         super(props);
+        this.cookies = new Cookies();
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
     }
@@ -32,11 +36,16 @@ class FitAuthContainer extends Component {
         tokenAuthTried: false
     };
 
+    handleSetUser = function (user) {
+        this.setState({'user': user});
+    }.bind(this);
+
     handleLogin(phone) {
 
         fetch(this.config.url.host + this.config.url.loginMethod,
             {
                 'method': 'POST',
+                'credentials': 'same-origin',
                 'headers': {'Accept': 'application/json'},
                 'body': JSON.stringify({
                     "phone": phone.phone,
@@ -50,8 +59,9 @@ class FitAuthContainer extends Component {
             this.setState({login: data.status, snackOpen: true});
             if (typeof data.user === 'object') {
                 this.setState({'user': data.user});
-                localStorage.setItem('authToken', data.token);
-                localStorage.setItem('authUserId', data.user.id);
+
+                this.cookies.set('authToken', data.token);
+                this.cookies.set('authUserId', data.user.id);
             } else {
 
             }
@@ -63,6 +73,8 @@ class FitAuthContainer extends Component {
 
     handleLogout() {
         this.setState({login: false});
+        this.cookies.remove('authToken');
+        this.cookies.remove('authUserId');
     }
 
     tokenAuth() {
@@ -70,11 +82,10 @@ class FitAuthContainer extends Component {
         fetch(this.config.url.host + this.config.url.tokenLoginMethod,
             {
                 'method': 'POST',
-                'headers': {'Accept': 'application/json'},
-                'body': JSON.stringify({
-                    "token": localStorage.getItem('authToken'),
-                    "userId": localStorage.getItem('authUserId')
-                })
+                'credentials': 'include',
+                'headers': {
+                    'Accept': 'application/json'
+                }
             }
         ).then(function (response) {
             console.log(response);
@@ -97,6 +108,21 @@ class FitAuthContainer extends Component {
         if (this.state.login !== true) {
             snackMessage = 'Авторизация не прошла (Введен неверный код)';
         }
+        let snackBar = <Snackbar
+            anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+            }}
+            open={this.state.snackOpen}
+            autoHideDuration={6000}
+            onClose={this.snackHandleClose}
+        >
+            <FitSnackBarContentWrapper
+                onClose={this.snackHandleClose}
+                variant="success"
+                message={snackMessage}
+            />
+        </Snackbar>;
 
         if (this.state.tokenAuthTried !== true) {
             this.tokenAuth();
@@ -108,6 +134,7 @@ class FitAuthContainer extends Component {
                     handleLogin={this.handleLogin}
                     handleLogout={this.handleLogout}
                     config={this.config}
+                    handleSetUser={this.handleSetUser}
                 />
                 <LogoBlock/>
 
@@ -116,21 +143,7 @@ class FitAuthContainer extends Component {
                     user={this.state}
                 />
 
-                <Snackbar
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    open={this.state.snackOpen}
-                    autoHideDuration={6000}
-                    onClose={this.snackHandleClose}
-                >
-                    <FitSnackBarContentWrapper
-                        onClose={this.snackHandleClose}
-                        variant="success"
-                        message={snackMessage}
-                    />
-                </Snackbar>
+                {snackBar}
 
             </div>
         );

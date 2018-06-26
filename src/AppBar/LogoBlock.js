@@ -3,8 +3,15 @@ import React from "react";
 import Phone from '@material-ui/icons/Phone';
 import FaInstagram from 'react-icons/lib/fa/instagram'
 import {Button, GridList, GridListTile} from "@material-ui/core";
+import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 
 class LogoBlock extends Component {
+    whiteBaseTheme = createMuiTheme({
+        palette: {
+            type: 'light',
+        },
+    });
+
     render() {
         const styles = {
             'f': {
@@ -41,52 +48,58 @@ class LogoBlock extends Component {
                     textAlign: 'center',
                     paddingTop: 100
                 }}>
-
-                <GridList
-                    cols={cols}
-                    cellHeight={250}
-                    style={{marginBottom: 100}}
-                >
-                    <GridListTile cols={textCols}>
-                        <div
-                            align="left"
-                            style={styles.f}
-                        >
-                            Стретчинг
-                            <br/>
-                            Силовые тренировки
-                            <br/>
-                            TRX
-                            <br/>
-                            <Button color="primary" >Записаться на занятие</Button>
-                            <Button color="secondary" >Купить абонемент онлайн</Button>
-                        </div>
-                    </GridListTile>
-                    <GridListTile><img style={{width: 250}} src={"/strlogo_black.jpg"} alt={"Stretch & GO"}/> </GridListTile>
-                    <GridListTile cols={textCols}>
-                        <div
-                            align="left"
-                            style={styles.s}
-
-                        >
-                            г. Домодедово, <span style={{whiteSpace: 'nowrap'}}>Племхозский пр. 1</span>
-                            <br/>
-                            ТЦ Западный, <span style={{whiteSpace: 'nowrap'}}>2 этаж</span>
-                            <br/>
-                            <div style={{verticalAlign: 'middle'}} className='phoneDiv'>
-
-                                <Phone /> <span style={{fontSize: 20}}>+7(906)018-00-01</span>
+                <MuiThemeProvider theme={this.whiteBaseTheme}>
+                    <GridList
+                        cols={cols}
+                        cellHeight={250}
+                        style={{marginBottom: 100}}
+                    >
+                        <GridListTile cols={textCols}>
+                            <div
+                                align="left"
+                                style={styles.f}
+                            >
+                                Стретчинг
+                                <br/>
+                                Силовые тренировки
+                                <br/>
+                                TRX
+                                <br/>
+                                <Button color="secondary" variant="outlined">
+                                    <span style={{'fontSize': '20px'}}>Записаться на занятие</span>
+                                </Button>
+                                <br/>
+                                <Button color="secondary" variant="outlined">
+                                    <span style={{'fontSize': '20px'}}>Купить абонемент онлайн</span>
+                                </Button>
                             </div>
-                            <div className='instDiv'>
-                                <FaInstagram /> <span style={{fontSize: 24}}>@stretchandgo</span>
+                        </GridListTile>
+                        <GridListTile><img style={{width: 250}} src={"/strlogo_black.jpg"} alt={"Stretch & GO"}/>
+                        </GridListTile>
+                        <GridListTile cols={textCols}>
+                            <div
+                                align="left"
+                                style={styles.s}
+
+                            >
+                                г. Домодедово, <span style={{whiteSpace: 'nowrap'}}>Племхозский пр. 1</span>
+                                <br/>
+                                ТЦ Западный, <span style={{whiteSpace: 'nowrap'}}>2 этаж</span>
+                                <br/>
+                                <div style={{verticalAlign: 'middle'}} className='phoneDiv'>
+
+                                    <Phone/> <span style={{fontSize: 20}}>+7(906)018-00-01</span>
+                                </div>
+                                <div className='instDiv'>
+                                    <FaInstagram/> <span style={{fontSize: 24}}>@stretchandgo</span>
+
+                                </div>
 
                             </div>
+                        </GridListTile>
 
-                        </div>
-                    </GridListTile>
-
-                </GridList>
-
+                    </GridList>
+                </MuiThemeProvider>
             </div>
         );
     }

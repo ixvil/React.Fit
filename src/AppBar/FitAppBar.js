@@ -12,9 +12,15 @@ import {
 import Menu from '@material-ui/icons/Menu';
 import ArrowBack from '@material-ui/icons/ArrowBack';
 import Person from '@material-ui/icons/Person'
+import ArrayTools from "../Tools/ArrayTools";
+import FitPromoCode from "./FitPromoCode";
 
 
 class FitAppBar extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
 
     classes = {
         drawerHeader: {
@@ -61,7 +67,10 @@ class FitAppBar extends React.Component {
             valid: false,
             phoneNumber: '+7('
         },
-        code: ''
+        code: '',
+        promoCode: {
+            open: false
+        }
     }
 
     handleLoginOpen = () => {
@@ -99,7 +108,6 @@ class FitAppBar extends React.Component {
     }
 
     render() {
-
         let icon =
             <IconButton
                 onClick={this.handleDrawerOpen}
@@ -108,27 +116,26 @@ class FitAppBar extends React.Component {
             >
                 <Menu/>
             </IconButton>;
-
         if (this.props.user.login === false) {
             icon = <IconButton onClick={this.handleLoginOpen}>
                 <Person/>
             </IconButton>;
         }
-
-
         return (
             <div className={this.classes.root}>
                 <AppBar position="static">
                     <Toolbar style={{backgroundColor: "#484848"}}>
-
                         {icon}
                         <Typography variant="title">Stretch&GO</Typography>
-
                         {this.getDrawer()}
                         {this.getLoginDialog()}
-
                     </Toolbar>
                 </AppBar>
+                <FitPromoCode
+                    open={this.state.promoCode.open}
+                    handleClose={this.handlePromoCodeClose}
+                    handleSetUser={this.props.handleSetUser}
+                />
 
             </div>
 
@@ -151,28 +158,42 @@ class FitAppBar extends React.Component {
                         <CardHeader
                             title={this.props.user.user.name}
                             subtitle={this.props.user.user.phone}
-                            avatar={
-                                <Avatar
-                                    src={"https://rr.img.naver.jp/mig?src=http%3A%2F%2Fimgcc.naver.jp%2Fkaze%2Fmission%2FUSER%2F20141230%2F30%2F3151100%2F397%2F236x236xccdffb5405c96366d53d0af7.jpg%2F300%2F600&twidth=300&theight=300&qlt=80&res_format=jpg&op=r"}
-                                />
-                            }
+                            avatar={<Avatar
+                                src={"https://st3.depositphotos.com/9998432/13335/v/1600/depositphotos_133353474-stock-illustration-default-avatar-profile-icon-gray.jpg"}
+                            />}
                         />
                         <CardContent>
                             <Typography>
-                                Свободных занятий: 0 <br/>
+                                Свободных занятий: {this.countAvailableLessons(this.props.user.user.userTickets)} <br/>
                                 Бонусных баллов: 0
                             </Typography>
                         </CardContent>
                     </Card>
                 </div>
                 <Divider/>
-                <MenuItem>Записаться на занятие</MenuItem>
-                <MenuItem>Купить абонемент</MenuItem>
+                <MenuItem>Ваши абонементы</MenuItem>
+                <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.handleLogout}>Выход</MenuItem>
             </Drawer>
 
         );
+    }
+
+    handlePromoCodeOpen = () => {
+        this.setState({
+            promoCode: {
+                open: true
+            }
+        });
+    }
+
+    handlePromoCodeClose = () => {
+        this.setState({
+            promoCode: {
+                open: false
+            }
+        });
     }
 
     getLoginDialog() {
@@ -298,6 +319,17 @@ class FitAppBar extends React.Component {
                 console.error(error);
             });
         }
+    }
+
+    countAvailableLessons(userTickets) {
+        if (typeof userTickets !== 'object') {
+            return 0;
+        }
+
+        let countTickets = userTickets.map((ticket) => {
+            return ticket.lessonsExpires;
+        });
+        return countTickets.reduce(ArrayTools.sum);
     }
 }
 
