@@ -30,15 +30,15 @@ class LogoBlock extends Component {
         let cols = 5;
         let textCols = 2;
 
-        if (window.innerWidth < 1300) {
-            cols = 3;
-            textCols = 1;
-        }
-
-        if (window.innerWidth < 950) {
-            cols = 1;
-            textCols = 1;
-        }
+        // if (window.innerWidth < 1300) {
+        //     cols = 3;
+        //     textCols = 1;
+        // }
+        //
+        // if (window.innerWidth < 950) {
+        //     cols = 1;
+        //     textCols = 1;
+        // }
 
         return (
             <div
@@ -65,13 +65,13 @@ class LogoBlock extends Component {
                                 <br/>
                                 TRX
                                 <br/>
-                                <Button color="secondary" variant="outlined">
-                                    <span style={{'fontSize': '20px'}}>Записаться на занятие</span>
-                                </Button>
-                                <br/>
-                                <Button color="secondary" variant="outlined">
-                                    <span style={{'fontSize': '20px'}}>Купить абонемент онлайн</span>
-                                </Button>
+                                {/*<Button color="secondary" variant="outlined">*/}
+                                    {/*<span style={{'fontSize': '20px'}}>Записаться на занятие</span>*/}
+                                {/*</Button>*/}
+                                {/*<br/>*/}
+                                {/*<Button color="secondary" variant="outlined">*/}
+                                    {/*<span style={{'fontSize': '20px'}}>Купить абонемент онлайн</span>*/}
+                                {/*</Button>*/}
                             </div>
                         </GridListTile>
                         <GridListTile><img style={{width: 250}} src={"/strlogo_black.jpg"} alt={"Stretch & GO"}/>
