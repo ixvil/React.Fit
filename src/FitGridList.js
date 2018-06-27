@@ -160,8 +160,8 @@ class FitGridList extends React.Component {
 
         const canApply = (lesson.lessonSet.usersLimit - lesson.lessonUsers.length) > 0;
         const freePlacesText = canApply
-            ? '(Осталось ' + (lesson.lessonSet.usersLimit - lesson.lessonUsers.length) + ' мест)'
-            : (<b> (Мест нет)</b>)
+            ? 'Осталось ' + (lesson.lessonSet.usersLimit - lesson.lessonUsers.length) + ' мест'
+            : (<b>Мест нет</b>)
         ;
 
         if (this.checkApplied(this.props.user.user.id, lesson.lessonUsers)) {
@@ -179,16 +179,19 @@ class FitGridList extends React.Component {
             >
                 <img src={lesson.lessonSet.lessonType.image} alt=''/>
                 <GridListTileBar
-                    title={<span>{lesson.lessonSet.lessonType.name} </span>}
+                    title={moment(new Date(lesson.startDateTime)).format('LT') + ' ' + lesson.hall.name}
                     titlePosition="top"
                     actionIcon={canApply ? iconButton : null}
-
                     subtitle={
                         <span>
-                        <b>{lesson.hall.name}</b>
-                        <b> {moment(new Date(lesson.startDateTime)).format('LT')}
-                        </b> <br/>{freePlacesText}</span>}
+                            <br/>{lesson.lessonSet.trainerUser.name}
+                        </span>}
                 />
+                <GridListTileBar
+                    title={lesson.lessonSet.lessonType.name}
+                    titlePosition="bottom"
+                    subtitle={freePlacesText}
+                ></GridListTileBar>
             </GridListTile>
         );
     }
@@ -245,7 +248,7 @@ class FitGridList extends React.Component {
         }
         return (
             <GridList
-                cellHeight={80}
+                cellHeight={68}
                 style={this.styles.gridList}
                 cols={this.days.length}
                 key={"grid_list"}

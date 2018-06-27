@@ -171,7 +171,7 @@ class FitAppBar extends React.Component {
                     </Card>
                 </div>
                 <Divider/>
-                <MenuItem>Ваши абонементы</MenuItem>
+                {/*<MenuItem>Ваши абонементы</MenuItem>*/}
                 <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.handleLogout}>Выход</MenuItem>
@@ -329,6 +329,9 @@ class FitAppBar extends React.Component {
         let countTickets = userTickets.map((ticket) => {
             return ticket.lessonsExpires;
         });
+        if (countTickets.length == 0) {
+            return 0;
+        }
         return countTickets.reduce(ArrayTools.sum);
     }
 }
