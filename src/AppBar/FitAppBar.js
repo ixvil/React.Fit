@@ -121,12 +121,17 @@ class FitAppBar extends React.Component {
                 <Person/>
             </IconButton>;
         }
+        let typo = <Typography variant="title">Stretch&GO</Typography>;
+        if (this.props.user.login === false) {
+            typo = <Typography variant="title" onClick={this.handleLoginOpen}>Вход в личный кабинет</Typography>;
+        }
         return (
             <div className={this.classes.root}>
                 <AppBar position="static">
                     <Toolbar style={{backgroundColor: "#484848"}}>
                         {icon}
-                        <Typography variant="title">Stretch&GO</Typography>
+                        {typo}
+
                         {this.getDrawer()}
                         {this.getLoginDialog()}
                     </Toolbar>
