@@ -88,7 +88,7 @@ class LogoBlock extends Component {
                                 <br/>
                                 <div style={{verticalAlign: 'middle'}} className='phoneDiv'>
 
-                                    <Phone/> <span style={{fontSize: 20}}>+7(906)018-00-01</span>
+                                    <Phone/> <span style={{fontSize: 20}}>+7(906)018-00-10</span>
                                 </div>
                                 <div className='instDiv'>
                                     <FaInstagram/> <span style={{fontSize: 24}}>@stretchandgo</span>

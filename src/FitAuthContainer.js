@@ -60,8 +60,8 @@ class FitAuthContainer extends Component {
             if (typeof data.user === 'object') {
                 this.setState({'user': data.user});
 
-                this.cookies.set('authToken', data.token);
-                this.cookies.set('authUserId', data.user.id);
+                this.cookies.set('authToken', data.token, {domain:'.stretchandgo.ru'});
+                this.cookies.set('authUserId', data.user.id, {domain:'.stretchandgo.ru'});
             } else {
 
             }
