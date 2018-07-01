@@ -88,7 +88,6 @@ class FitAuthContainer extends Component {
                 }
             }
         ).then(function (response) {
-            console.log(response);
             return response.json();
         }).then((data) => {
             this.setState({login: data.status, snackOpen: true});

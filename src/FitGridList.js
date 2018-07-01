@@ -181,7 +181,7 @@ class FitGridList extends React.Component {
                 <GridListTileBar
                     title={moment(new Date(lesson.startDateTime)).format('LT') + ' ' + lesson.hall.name}
                     titlePosition="top"
-                    actionIcon={canApply ? iconButton : null}
+                    actionIcon={canApply || this.checkApplied(this.props.user.user.id, lesson.lessonUsers) ? iconButton : null}
                     subtitle={
                         <span>
                             <br/>{lesson.lessonSet.trainerUser.name}
