@@ -6,6 +6,7 @@ import FitGridList from "./FitGridList";
 import {Snackbar} from "@material-ui/core";
 import FitSnackBarContentWrapper from "./Tools/FitSnackBarContentWrapper";
 import Cookies from 'universal-cookie'
+import FitTickets from "./Ticket/FitTickets";
 
 class FitAuthContainer extends Component {
     cookies;
@@ -24,8 +25,8 @@ class FitAuthContainer extends Component {
             'lessonUserMethod': 'lessonUser/',
             'requestCodeMethod': 'auth/requestCode/',
             'loginMethod': 'auth/login/',
-            'tokenLoginMethod': 'auth/tokenLogin/'
-
+            'tokenLoginMethod': 'auth/tokenLogin/',
+            'buyTicketMethod': 'userTicket/buy/'
         }
     }
 
@@ -33,7 +34,10 @@ class FitAuthContainer extends Component {
         login: false,
         user: {},
         snackOpen: false,
-        tokenAuthTried: false
+        tokenAuthTried: false,
+        fitTickets: {
+            open: false
+        }
     };
 
     handleSetUser = function (user) {
@@ -60,8 +64,8 @@ class FitAuthContainer extends Component {
             if (typeof data.user === 'object') {
                 this.setState({'user': data.user});
 
-                this.cookies.set('authToken', data.token, {domain:'.stretchandgo.ru'});
-                this.cookies.set('authUserId', data.user.id, {domain:'.stretchandgo.ru'});
+                this.cookies.set('authToken', data.token, {domain: '.stretchandgo.ru'});
+                this.cookies.set('authUserId', data.user.id, {domain: '.stretchandgo.ru'});
             } else {
 
             }
@@ -134,9 +138,14 @@ class FitAuthContainer extends Component {
                     handleLogout={this.handleLogout}
                     config={this.config}
                     handleSetUser={this.handleSetUser}
+                    fitTicketsHandleOpen={this.fitTicketsHandleOpen}
                 />
                 <LogoBlock/>
-
+                <FitTickets
+                    open={this.state.fitTickets.open}
+                    handleClose={this.fitTicketsHandleClose}
+                    config={this.config}
+                />
                 <FitGridList
                     config={this.config}
                     user={this.state}
@@ -146,6 +155,13 @@ class FitAuthContainer extends Component {
 
             </div>
         );
+    }
+
+    fitTicketsHandleClose = () => {
+        this.setState({fitTickets: {open: false}});
+    }
+    fitTicketsHandleOpen = () => {
+        this.setState({fitTickets: {open: true}});
     }
 
     snackHandleClose = (event, reason) => {

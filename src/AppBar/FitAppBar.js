@@ -176,7 +176,7 @@ class FitAppBar extends React.Component {
                     </Card>
                 </div>
                 <Divider/>
-                {/*<MenuItem>Ваши абонементы</MenuItem>*/}
+                {/*<MenuItem onClick={this.props.fitTicketsHandleOpen}>Купить абонемент</MenuItem>*/}
                 <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.handleLogout}>Выход</MenuItem>
