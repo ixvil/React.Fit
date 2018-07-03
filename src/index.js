@@ -4,9 +4,12 @@ import {
     MuiThemeProvider,
     createMuiTheme
 } from '@material-ui/core/styles';
-
 import './index.css'
 import FitAuthContainer from "./FitAuthContainer";
+import {
+    BrowserRouter,
+    Route
+} from "react-router-dom";
 
 class Fit extends React.Component {
 
@@ -20,7 +23,9 @@ class Fit extends React.Component {
         return (
 
             <MuiThemeProvider theme={darkBaseTheme}>
-                <FitAuthContainer/>
+                <FitAuthContainer
+                    documentId={this.props.match.params.documentId}
+                />
             </MuiThemeProvider>
         );
     }
@@ -29,7 +34,12 @@ class Fit extends React.Component {
 // ========================================
 
 ReactDOM.render(
-    <Fit/>,
+    <BrowserRouter>
+        <div>
+            <Route exact path="/" component={Fit}/>
+            <Route path="/documents/:documentId" component={Fit}/>
+        </div>
+    </BrowserRouter>,
     document.getElementById('root')
 );
 

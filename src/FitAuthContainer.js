@@ -3,10 +3,15 @@ import React from "react";
 import FitAppBar from "./AppBar/FitAppBar";
 import LogoBlock from "./AppBar/LogoBlock";
 import FitGridList from "./FitGridList";
-import {Snackbar} from "@material-ui/core";
+import {
+    Snackbar
+} from "@material-ui/core";
 import FitSnackBarContentWrapper from "./Tools/FitSnackBarContentWrapper";
 import Cookies from 'universal-cookie'
 import FitTickets from "./Ticket/FitTickets";
+import DocumentDialog from "./Documents/DocumentDialog";
+import {createMuiTheme} from "@material-ui/core/styles/index";
+import Footer from "./Footer";
 
 class FitAuthContainer extends Component {
     cookies;
@@ -37,8 +42,25 @@ class FitAuthContainer extends Component {
         tokenAuthTried: false,
         fitTickets: {
             open: false
+        },
+        documents: {
+            open: this.props.documentId ? true : false,
+            type: this.props.documentId ? this.props.documentId : null
         }
     };
+
+    handleDocumentDialog = (type) => {
+        this.setState({
+            'documents': {
+                'open': true,
+                'type': type
+            }
+        })
+    }
+
+    handleDocumentDialogClose = () => {
+        this.setState({documents: {open: false}});
+    }
 
     handleSetUser = function (user) {
         this.setState({'user': user});
@@ -139,20 +161,31 @@ class FitAuthContainer extends Component {
                     config={this.config}
                     handleSetUser={this.handleSetUser}
                     fitTicketsHandleOpen={this.fitTicketsHandleOpen}
+                    handleDocumentDialog={this.handleDocumentDialog}
                 />
                 <LogoBlock/>
+
                 <FitTickets
                     open={this.state.fitTickets.open}
                     handleClose={this.fitTicketsHandleClose}
                     config={this.config}
+                    handleDocumentDialog={this.handleDocumentDialog}
                 />
+
                 <FitGridList
                     config={this.config}
                     user={this.state}
                 />
 
                 {snackBar}
-
+                <DocumentDialog
+                    open={this.state.documents.open}
+                    type={this.state.documents.type}
+                    handleDocumentDialogClose={this.handleDocumentDialogClose}
+                />
+                <Footer
+                    handleDocumentDialog={this.handleDocumentDialog}
+                />
             </div>
         );
     }

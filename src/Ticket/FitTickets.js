@@ -1,11 +1,14 @@
 import React from "react";
 import {withStyles} from '@material-ui/core/styles';
+import {MuiThemeProvider} from '@material-ui/core';
 
 import {
     AppBar,
     Button,
 
     Dialog,
+    DialogActions,
+    DialogContent,
     Divider,
     IconButton,
     List,
@@ -18,6 +21,7 @@ import {
 
 
 import CloseIcon from "@material-ui/icons/Close"
+import {createMuiTheme} from "@material-ui/core/styles/index";
 
 const styles = {
     appBar: {
@@ -33,38 +37,62 @@ function Transition(props) {
 }
 
 class FitTickets extends React.Component {
+    whiteBaseTheme = createMuiTheme({
+        palette: {
+            type: 'light'
+        },
+    });
 
     render() {
         const {classes} = this.props;
         return (
-            <Dialog
-                fullScreen
-                open={this.props.open}
-                onClose={this.props.handleClose}
-                TransitionComponent={Transition}
-            >
-                <AppBar className={classes.appBar}>
-                    <Toolbar>
-                        <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
-                            <CloseIcon/>
-                        </IconButton>
-                        <Typography variant="title" color="inherit" className={classes.flex}>
-                            Купить абонемент
+            <MuiThemeProvider theme={this.whiteBaseTheme}>
+                <Dialog
+                    fullWidth
+                    maxWidth='2xs'
+                    open={this.props.open}
+                    onClose={this.props.handleClose}
+                    TransitionComponent={Transition}
+                >
+                    <AppBar className={classes.appBar}>
+                        <Toolbar>
+                            <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
+                                <CloseIcon/>
+                            </IconButton>
+                            <Typography variant="title" color="inherit" className={classes.flex}>
+                                Купить абонемент
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
+                    <List>
+                        <ListItem button>
+                            <ListItemText onClick={this.buyTicketHandle8} primary="Абонемент на 8 занятий"
+                                          secondary="3200 р."/>
+                        </ListItem>
+                        <Divider/>
+                        <ListItem button>
+                            <ListItemText onClick={this.buyTicketHandle1} primary="Разовое посещение"
+                                          secondary="700 р."/>
+                        </ListItem>
+                        <Divider/>
+                    </List>
+                    <DialogContent>
+                        <Typography>
+                            *Приобретая абонемент на сайте, вы соглашаетесь с Правилами студии и Договором присоединения
                         </Typography>
-                    </Toolbar>
-                </AppBar>
-                <List>
-                    <ListItem button>
-                        <ListItemText onClick={this.buyTicketHandle8} primary="Абонемент на 8 занятий"
-                                      secondary="3200 р."/>
-                    </ListItem>
-                    <Divider/>
-                    <ListItem button>
-                        <ListItemText onClick={this.buyTicketHandle1} primary="Разовое посещение"
-                                      secondary="560 р."/>
-                    </ListItem>
-                </List>
-            </Dialog>);
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => this.props.handleDocumentDialog('contract')}>Договор
+                            присоединения</Button>
+                        <Button onClick={() => this.props.handleDocumentDialog('refund')}>Возврат средств</Button>
+                        <Button onClick={() => this.props.handleDocumentDialog('payment')}>Процесс оплаты</Button>
+                        <Button onClick={() => this.props.handleDocumentDialog('rules')}>Правила студии</Button>
+                        <Button onClick={() => this.props.handleDocumentDialog('confidential')}>Политика
+                            конфиденциальности</Button>
+                    </DialogActions>
+                </Dialog>
+            </MuiThemeProvider>
+        );
     }
 
     buyTicketHandle8 = () => {

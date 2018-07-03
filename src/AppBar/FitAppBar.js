@@ -123,7 +123,7 @@ class FitAppBar extends React.Component {
         }
         let typo = <Typography variant="title">Stretch&GO</Typography>;
         if (this.props.user.login === false) {
-            typo = <Typography variant="title" onClick={this.handleLoginOpen}>Вход в личный кабинет</Typography>;
+            typo = <Typography variant="title" onClick={this.handleLoginOpen} >Вход в личный кабинет</Typography>;
         }
         return (
             <div className={this.classes.root}>
@@ -131,9 +131,18 @@ class FitAppBar extends React.Component {
                     <Toolbar style={{backgroundColor: "#484848"}}>
                         {icon}
                         {typo}
-
                         {this.getDrawer()}
                         {this.getLoginDialog()}
+
+                        {/*<Button*/}
+                            {/*color="inherit"*/}
+                            {/*onClick={() => this.props.handleDocumentDialog('about')}*/}
+                        {/*>О нас</Button>*/}
+                        <Button
+                            color="inherit"
+                            onClick={() => this.props.handleDocumentDialog('contacts')}
+                        >Контакты</Button>
+
                     </Toolbar>
                 </AppBar>
                 <FitPromoCode
@@ -141,7 +150,6 @@ class FitAppBar extends React.Component {
                     handleClose={this.handlePromoCodeClose}
                     handleSetUser={this.props.handleSetUser}
                 />
-
             </div>
 
         );
@@ -176,7 +184,7 @@ class FitAppBar extends React.Component {
                     </Card>
                 </div>
                 <Divider/>
-                {/*<MenuItem onClick={this.props.fitTicketsHandleOpen}>Купить абонемент</MenuItem>*/}
+                <MenuItem onClick={this.props.fitTicketsHandleOpen}>Купить абонемент</MenuItem>
                 <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.handleLogout}>Выход</MenuItem>

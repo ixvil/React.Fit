@@ -58,3 +58,17 @@ ol, ul {
     position: relative;
     top: -2px;
 }
+
+.toolbar_buttons_right {
+    float: right;
+}
+
+.pre-line {
+    white-space: pre-line;
+}
+
+.footer-paper {
+    height: 60px;
+    text-align: center;
+    padding-top: 20px;
+}
