@@ -15,6 +15,7 @@ import {Add, Done} from '@material-ui/icons'
 import moment from "moment";
 import ru from 'moment/locale/ru'
 import ArrayTools from "./Tools/ArrayTools";
+import UnApplyDialog from "./Schedule/UnApplyDialog";
 
 class FitGridList extends React.Component {
 
@@ -65,7 +66,10 @@ class FitGridList extends React.Component {
             id: 0
         },
         phone: {},
-        lessons: {}
+        lessons: {},
+        cancel: {
+            open: false,
+        }
     };
 
     handleOpen = (lesson) => {
@@ -75,6 +79,14 @@ class FitGridList extends React.Component {
     handleClose = () => {
         this.setState({open: false});
     };
+
+    handleCancelOpen = (lesson) => {
+        this.setState({cancel: {open: true, lesson: lesson}});
+    }
+
+    handleCancelClose = () => {
+        this.setState({cancel: {open: false}});
+    }
 
     handleApplication = () => {
 
@@ -103,6 +115,34 @@ class FitGridList extends React.Component {
                 console.error(error);
             });
         }
+    }
+
+    handleCancelApplication = (lesson) => {
+
+        fetch(this.url.host + this.url.lessonUserMethod+'delete',
+            {
+                'method': 'POST',
+                'credentials': 'include',
+                'headers': {'Accept': 'application/json'},
+                'body': JSON.stringify({
+                    "lesson": lesson
+                })
+            }
+        ).then(function (response) {
+            return response.json();
+        }).then((data) => {
+
+            if (typeof data.error !== "undefined") {
+                alert(data.error);
+            } else {
+                alert('Отмена произведена успешно');
+                this.setLessons(data.lessons);
+                this.setState({'user': data.user, cancel: {open: false}});
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+
     }
 
     days = [];
@@ -166,7 +206,12 @@ class FitGridList extends React.Component {
 
         if (this.checkApplied(this.props.user.user.id, lesson.lessonUsers)) {
             iconButton = <IconButton>
-                <Done style={{"color": "#00FF00"}}/>
+                <Done
+                    style={{"color": "#00FF00"}}
+                    onClick={() => {
+                        this.handleCancelOpen(lesson);
+                    }}
+                />
 
             </IconButton>;
         }
@@ -238,6 +283,11 @@ class FitGridList extends React.Component {
                     {this.getGridList()}
                 </div>
                 {dialog}
+                <UnApplyDialog
+                    cancel={this.state.cancel}
+                    handleCancelClose={this.handleCancelClose}
+                    handleCancelApplication={this.handleCancelApplication}
+                />
             </div>
         );
     }
