@@ -80,8 +80,7 @@ class FitTickets extends React.Component {
                         <Typography>
                             *Приобретая абонемент на сайте, вы соглашаетесь с Правилами студии и Договором присоединения
                         </Typography>
-                    </DialogContent>
-                    <DialogActions>
+                        <span className={"tickets-footer"}>
                         <Button onClick={() => this.props.handleDocumentDialog('contract')}>Договор
                             присоединения</Button>
                         <Button onClick={() => this.props.handleDocumentDialog('refund')}>Возврат средств</Button>
@@ -89,7 +88,9 @@ class FitTickets extends React.Component {
                         <Button onClick={() => this.props.handleDocumentDialog('rules')}>Правила студии</Button>
                         <Button onClick={() => this.props.handleDocumentDialog('confidential')}>Политика
                             конфиденциальности</Button>
-                    </DialogActions>
+                        </span>
+                    </DialogContent>
+
                 </Dialog>
             </MuiThemeProvider>
         );

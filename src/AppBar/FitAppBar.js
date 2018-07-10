@@ -40,7 +40,7 @@ class FitAppBar extends React.Component {
             marginRight: 20,
         },
         textFieldDiv: {
-            width: '300px',
+            width: '250px',
             float: 'left'
         },
         loginDialogButtonDiv: {

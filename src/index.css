@@ -68,7 +68,12 @@ ol, ul {
 }
 
 .footer-paper {
-    height: 60px;
+    height: auto;
     text-align: center;
+    padding-top: 20px;
+}
+
+.tickets-footer {
+    float: right;
     padding-top: 20px;
 }
