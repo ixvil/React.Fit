@@ -72,7 +72,7 @@ class FitTickets extends React.Component {
                         <Divider/>
                         <ListItem button>
                             <ListItemText onClick={this.buyTicketHandle1} primary="Разовое посещение"
-                                          secondary="700 р."/>
+                                          secondary="560 р."/>
                         </ListItem>
                         <Divider/>
                     </List>
