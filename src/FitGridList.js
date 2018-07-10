@@ -149,18 +149,21 @@ class FitGridList extends React.Component {
 
     styles = {
         root: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around'
+            // display: 'flex',
+            // flexWrap: 'wrap',
+            // justifyContent: 'space-around',
+            overflowX: 'scroll',
+
         },
         headerGridList: {
             background: 'rgb(72, 72, 72)'
         },
         gridList: {
+            minWidth: 1200,
+
             display: 'flex',
-            // flexWrap: 'nowrap',
-            overflowX: 'auto',
-            overflowY: 'auto',
+            // overflowX: 'scroll',
+            // overflowY: '',
             margin: 0,
             padding: 0
             // width: 1400,

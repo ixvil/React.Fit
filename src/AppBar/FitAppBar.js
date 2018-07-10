@@ -40,7 +40,7 @@ class FitAppBar extends React.Component {
             marginRight: 20,
         },
         textFieldDiv: {
-            width: '400px',
+            width: '300px',
             float: 'left'
         },
         loginDialogButtonDiv: {
@@ -123,7 +123,7 @@ class FitAppBar extends React.Component {
         }
         let typo = <Typography variant="title">Stretch&GO</Typography>;
         if (this.props.user.login === false) {
-            typo = <Typography variant="title" onClick={this.handleLoginOpen} >Вход в личный кабинет</Typography>;
+            typo = <Typography variant="title" onClick={this.handleLoginOpen} >Войти</Typography>;
         }
         return (
             <div className={this.classes.root}>
