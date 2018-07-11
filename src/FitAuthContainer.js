@@ -31,7 +31,8 @@ class FitAuthContainer extends Component {
             'requestCodeMethod': 'auth/requestCode/',
             'loginMethod': 'auth/login/',
             'tokenLoginMethod': 'auth/tokenLogin/',
-            'buyTicketMethod': 'userTicket/buy/'
+            'buyTicketMethod': 'userTicket/buy/',
+            'welcomeFormMethod':'user/welcome/'
         }
     }
 

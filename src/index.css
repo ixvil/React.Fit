@@ -73,6 +73,10 @@ ol, ul {
     padding-top: 20px;
 }
 
+a.phoneHref{
+    color:black;
+    text-decoration:none;
+}
 .tickets-footer {
     float: right;
     padding-top: 20px;

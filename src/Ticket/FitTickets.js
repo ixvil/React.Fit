@@ -7,14 +7,12 @@ import {
     Button,
 
     Dialog,
-    DialogActions,
     DialogContent,
     Divider,
     IconButton,
     List,
     ListItem,
     ListItemText,
-    Slide,
     Toolbar,
     Typography,
 } from "@material-ui/core"
@@ -32,10 +30,6 @@ const styles = {
     },
 };
 
-function Transition(props) {
-    return <Slide direction="up" {...props} />;
-}
-
 class FitTickets extends React.Component {
     whiteBaseTheme = createMuiTheme({
         palette: {
@@ -49,10 +43,9 @@ class FitTickets extends React.Component {
             <MuiThemeProvider theme={this.whiteBaseTheme}>
                 <Dialog
                     fullWidth
-                    maxWidth='2xs'
+                    maxWidth='md'
                     open={this.props.open}
                     onClose={this.props.handleClose}
-                    TransitionComponent={Transition}
                 >
                     <AppBar className={classes.appBar}>
                         <Toolbar>
@@ -67,12 +60,12 @@ class FitTickets extends React.Component {
                     <List>
                         <ListItem button>
                             <ListItemText onClick={this.buyTicketHandle8} primary="Абонемент на 8 занятий"
-                                          secondary="3200 р."/>
+                                          secondary="4000 р."/>
                         </ListItem>
                         <Divider/>
                         <ListItem button>
                             <ListItemText onClick={this.buyTicketHandle1} primary="Разовое посещение"
-                                          secondary="560 р."/>
+                                          secondary="700 р."/>
                         </ListItem>
                         <Divider/>
                     </List>

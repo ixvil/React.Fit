@@ -14,6 +14,8 @@ import ArrowBack from '@material-ui/icons/ArrowBack';
 import Person from '@material-ui/icons/Person'
 import ArrayTools from "../Tools/ArrayTools";
 import FitPromoCode from "./FitPromoCode";
+import WelcomeForm from "./WelcomeForm";
+import {withStyles} from "@material-ui/core/styles/index";
 
 
 class FitAppBar extends React.Component {
@@ -22,12 +24,15 @@ class FitAppBar extends React.Component {
         super(props);
     }
 
-    classes = {
+    static styles = {
         drawerHeader: {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            padding: '0 8px',
+            padding: '0 8px'
+        },
+        drawerPaper: {
+            width: 350
         },
         root: {
             flexGrow: 1,
@@ -70,6 +75,10 @@ class FitAppBar extends React.Component {
         code: '',
         promoCode: {
             open: false
+        },
+        welcomeForm: {
+            open: false,
+            showed: false
         }
     }
 
@@ -108,6 +117,16 @@ class FitAppBar extends React.Component {
     }
 
     render() {
+        const {classes} = this.props;
+        if (this.props.user.login === true && this.props.user.user.name === '' && this.state.welcomeForm.showed == false) {
+            this.setState({
+                welcomeForm: {
+                    open: true,
+                    showed: true
+                }
+            });
+        }
+
         let icon =
             <IconButton
                 onClick={this.handleDrawerOpen}
@@ -123,21 +142,20 @@ class FitAppBar extends React.Component {
         }
         let typo = <Typography variant="title">Stretch&GO</Typography>;
         if (this.props.user.login === false) {
-            typo = <Typography variant="title" onClick={this.handleLoginOpen} >Войти</Typography>;
+            if (window.innerWidth < 950) {
+                typo = <Typography variant="title" onClick={this.handleLoginOpen}>Войти</Typography>;
+            } else {
+                typo = <Typography variant="title" onClick={this.handleLoginOpen}>Личный кабинет</Typography>;
+            }
         }
         return (
-            <div className={this.classes.root}>
+            <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar style={{backgroundColor: "#484848"}}>
                         {icon}
                         {typo}
                         {this.getDrawer()}
                         {this.getLoginDialog()}
-
-                        {/*<Button*/}
-                            {/*color="inherit"*/}
-                            {/*onClick={() => this.props.handleDocumentDialog('about')}*/}
-                        {/*>О нас</Button>*/}
                         <Button
                             color="inherit"
                             onClick={() => this.props.handleDocumentDialog('contacts')}
@@ -150,17 +168,31 @@ class FitAppBar extends React.Component {
                     handleClose={this.handlePromoCodeClose}
                     handleSetUser={this.props.handleSetUser}
                 />
+                <WelcomeForm
+                    open={this.state.welcomeForm.open}
+                    handleCloseWelcome={this.handleCloseWelcome}
+                    handleSetUser={this.props.handleSetUser}
+                    config={this.props.config}
+                />
             </div>
 
         );
     }
 
+    handleCloseWelcome = () => {
+        this.setState({welcomeForm: {open: false, showed: true}})
+    }
+
     getDrawer() {
+        const {classes} = this.props;
         return (
             <Drawer
                 open={this.state.drawerOpen}
                 variant="persistent"
-                // onRequestChange={(open) => this.setState({open})}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+
             >
                 <div>
                     <IconButton onClick={this.handleDrawerClose}>
@@ -170,7 +202,7 @@ class FitAppBar extends React.Component {
                     <Card>
                         <CardHeader
                             title={this.props.user.user.name}
-                            subtitle={this.props.user.user.phone}
+                            subheader={this.props.user.user.phone}
                             avatar={<Avatar
                                 src={"https://st3.depositphotos.com/9998432/13335/v/1600/depositphotos_133353474-stock-illustration-default-avatar-profile-icon-gray.jpg"}
                             />}
@@ -210,7 +242,6 @@ class FitAppBar extends React.Component {
     }
 
     getLoginDialog() {
-
         return (
             <Dialog
                 open={this.state.loginOpen}
@@ -219,17 +250,17 @@ class FitAppBar extends React.Component {
             >
                 <DialogTitle id="form-dialog-title">{"Авторизация"}</DialogTitle>
                 <DialogContent>
-                    <div style={this.classes.textFieldDiv}>
+                    <div>
                         {this.getPhoneField()}
                     </div>
-                    <div style={this.classes.loginDialogButtonDiv}>
+                    <div>
                         <Button
                             disabled={!this.state.phone.valid}
                             onClick={this.handleCodeSending}
                         >Получить код</Button>
                     </div>
-                    <div style={this.classes.divider}></div>
-                    <div style={this.classes.textFieldDiv}>
+                    <div></div>
+                    <div>
                         <TextField
                             label="Код подтверждения"
                             onChange={this.onChangeCode.bind(this)}
@@ -237,7 +268,7 @@ class FitAppBar extends React.Component {
                             fullWidth
                         />
                     </div>
-                    <div style={this.classes.loginDialogButtonDiv}>
+                    <div>
                         <Button
                             disabled={!this.state.codeSent}
                             onClick={this.handleCodeConfirmation}
@@ -349,4 +380,4 @@ class FitAppBar extends React.Component {
     }
 }
 
-export default FitAppBar;
+export default withStyles(FitAppBar.styles)(FitAppBar);
