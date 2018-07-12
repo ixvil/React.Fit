@@ -2,7 +2,7 @@ import {Component} from "react";
 import React from "react";
 import Phone from '@material-ui/icons/Phone';
 import FaInstagram from 'react-icons/lib/fa/instagram'
-import {Button, GridList, GridListTile} from "@material-ui/core";
+import {GridList, GridListTile} from "@material-ui/core";
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 
 class LogoBlock extends Component {

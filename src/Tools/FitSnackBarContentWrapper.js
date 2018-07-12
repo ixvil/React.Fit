@@ -1,7 +1,7 @@
 import React from "react";
 import {SnackbarContent, IconButton} from '@material-ui/core';
 import {green, amber} from "@material-ui/core/colors";
-import {CheckCircle, Warning, Error, Info, Close} from '@material-ui/icons'
+import {CheckCircle, Close} from '@material-ui/icons'
 
 class FitSnackBarContentWrapper extends React.Component {
 
@@ -9,12 +9,6 @@ class FitSnackBarContentWrapper extends React.Component {
         success: {
             backgroundColor: green[600],
         },
-        // error: {
-        //     backgroundColor: theme.palette.error.dark,
-        // },
-        // info: {
-        //     backgroundColor: theme.palette.primary.dark,
-        // },
         warning: {
             backgroundColor: amber[700],
         },
