@@ -119,8 +119,8 @@ class FitAuthContainer extends Component {
 
     handleLogout() {
         this.setState({login: false});
-        this.cookies.remove('authToken');
-        this.cookies.remove('authUserId');
+        this.cookies.remove('authToken', {domain: process.env.COOKIE_DOMAIN});
+        this.cookies.remove('authUserId', {domain: process.env.COOKIE_DOMAIN});
     }
 
     tokenAuth() {
