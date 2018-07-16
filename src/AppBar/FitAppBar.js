@@ -16,6 +16,7 @@ import ArrayTools from "../Tools/ArrayTools";
 import FitPromoCode from "./FitPromoCode";
 import WelcomeForm from "./WelcomeForm";
 import {withStyles} from "@material-ui/core/styles/index";
+import FitQRCode from "./FitQRCode";
 
 
 class FitAppBar extends React.Component {
@@ -64,9 +65,9 @@ class FitAppBar extends React.Component {
 
     state = {
         drawerOpen: false,
-        loginOpen: false,
         codeSent: false,
         phoneFrozen: false,
+        QROpen: false,
         phone: {
             errorText: '',
             valid: false,
@@ -80,14 +81,6 @@ class FitAppBar extends React.Component {
             open: false,
             showed: false
         }
-    }
-
-    handleLoginOpen = () => {
-        this.setState({loginOpen: true})
-    }
-    handleLoginClose = () => {
-        this.setState({loginOpen: false, codeSent: false, phone: {valid: false, frozen: false}});
-
     }
 
 
@@ -136,21 +129,21 @@ class FitAppBar extends React.Component {
                 <Menu/>
             </IconButton>;
         if (this.props.user.login === false) {
-            icon = <IconButton onClick={this.handleLoginOpen}>
+            icon = <IconButton onClick={this.props.handleLoginOpen}>
                 <Person/>
             </IconButton>;
         }
         let typo = <Typography variant="title">Stretch&GO</Typography>;
         if (this.props.user.login === false) {
             if (window.innerWidth < 950) {
-                typo = <Typography variant="title" onClick={this.handleLoginOpen}>Войти</Typography>;
+                typo = <Typography variant="title" onClick={this.props.handleLoginOpen}>Войти</Typography>;
             } else {
-                typo = <Typography variant="title" onClick={this.handleLoginOpen}>Личный кабинет</Typography>;
+                typo = <Typography variant="title" onClick={this.props.handleLoginOpen}>Личный кабинет</Typography>;
             }
         }
         return (
             <div className={classes.root}>
-                <AppBar position="static">
+                <AppBar position="fixed">
                     <Toolbar style={{backgroundColor: "#484848"}}>
                         {icon}
                         {typo}
@@ -174,6 +167,12 @@ class FitAppBar extends React.Component {
                     handleSetUser={this.props.handleSetUser}
                     config={this.props.config}
                 />
+                <FitQRCode
+                    open={this.state.QROpen}
+                    value={this.props.user.user.phone}
+                    handleQROpen={this.handleQROpen}
+                    handleQRClose={this.handleQRClose}
+                />
             </div>
 
         );
@@ -185,6 +184,8 @@ class FitAppBar extends React.Component {
 
     getDrawer() {
         const {classes} = this.props;
+
+
         return (
             <Drawer
                 open={this.state.drawerOpen}
@@ -215,6 +216,8 @@ class FitAppBar extends React.Component {
                         </CardContent>
                     </Card>
                 </div>
+                {/*<Divider/>*/}
+                {/*<MenuItem onClick={this.handleQROpen}>Показать QR код</MenuItem>*/}
                 <Divider/>
                 <MenuItem onClick={this.props.fitTicketsHandleOpen}>Купить абонемент</MenuItem>
                 <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>
@@ -223,6 +226,18 @@ class FitAppBar extends React.Component {
             </Drawer>
 
         );
+    }
+
+    handleQROpen = () => {
+        this.setState({
+            QROpen: true
+        });
+    }
+
+    handleQRClose = () => {
+        this.setState({
+            QROpen: false
+        });
     }
 
     handlePromoCodeOpen = () => {
@@ -244,8 +259,8 @@ class FitAppBar extends React.Component {
     getLoginDialog() {
         return (
             <Dialog
-                open={this.state.loginOpen}
-                onClose={this.handleLoginClose}
+                open={this.props.loginDialog.open}
+                onClose={this.props.handleLoginClose}
                 fullWidth
             >
                 <DialogTitle id="form-dialog-title">{"Авторизация"}</DialogTitle>

@@ -11,11 +11,12 @@ import {
     IconButton,
     GridListTileBar
 } from "@material-ui/core";
-import {Add, Done} from '@material-ui/icons'
+import {Add, Done, PlaylistAddCheck} from '@material-ui/icons'
 import moment from "moment";
 import ru from 'moment/locale/ru'
 import ArrayTools from "./Tools/ArrayTools";
 import UnApplyDialog from "./Schedule/UnApplyDialog";
+import FitQRScanner from "./Schedule/FitQRScanner";
 
 class FitGridList extends React.Component {
 
@@ -69,7 +70,8 @@ class FitGridList extends React.Component {
         lessons: {},
         cancel: {
             open: false,
-        }
+        },
+        QRScannerOpen: false
     };
 
     handleOpen = (lesson) => {
@@ -87,6 +89,14 @@ class FitGridList extends React.Component {
     handleCancelClose = () => {
         this.setState({cancel: {open: false}});
     }
+
+    handleQRScannerOpen = (lesson) => {
+        this.setState({QRScannerOpen: true,  dialog: lesson});
+    }
+    handleQRScannerClose = () => {
+        this.setState({QRScannerOpen: false});
+    }
+
 
     handleApplication = () => {
 
@@ -119,7 +129,7 @@ class FitGridList extends React.Component {
 
     handleCancelApplication = (lesson) => {
 
-        fetch(this.url.host + this.url.lessonUserMethod+'delete',
+        fetch(this.url.host + this.url.lessonUserMethod + 'delete',
             {
                 'method': 'POST',
                 'credentials': 'include',
@@ -194,18 +204,24 @@ class FitGridList extends React.Component {
     }
 
     getNextTile(lesson) {
-        let iconButton = <IconButton>
-            <Add onClick={() => {
-                this.handleOpen(lesson);
-            }}/>
 
-        </IconButton>;
+        let iconButton = null;
 
         const canApply = (lesson.lessonSet.usersLimit - lesson.lessonUsers.length) > 0;
+
+        if (canApply && this.props.user.user.type.id === 3) {
+            iconButton = <IconButton>
+                <Add onClick={() => {
+                    this.handleOpen(lesson);
+                }}/>
+
+            </IconButton>;
+        }
         const freePlacesText = canApply
             ? 'Осталось ' + (lesson.lessonSet.usersLimit - lesson.lessonUsers.length) + ' мест'
             : (<b>Мест нет</b>)
         ;
+
 
         if (this.checkApplied(this.props.user.user.id, lesson.lessonUsers)) {
             iconButton = <IconButton>
@@ -219,6 +235,17 @@ class FitGridList extends React.Component {
             </IconButton>;
         }
 
+        if (this.props.user.user.id === lesson.lessonSet.trainerUser.id || this.props.user.user.type.id === 1) {
+            iconButton = <IconButton>
+                <PlaylistAddCheck
+                    onClick={() => {
+                        this.handleQRScannerOpen(lesson)
+                    }}
+                />
+            </IconButton>;
+        }
+
+
         return (
             <GridListTile
                 key={'key_' + lesson.id}
@@ -229,7 +256,7 @@ class FitGridList extends React.Component {
                 <GridListTileBar
                     title={moment(new Date(lesson.startDateTime)).format('LT') + ' ' + lesson.hall.name}
                     titlePosition="top"
-                    actionIcon={canApply || this.checkApplied(this.props.user.user.id, lesson.lessonUsers) ? iconButton : null}
+                    actionIcon={iconButton}
                     subtitle={
                         <span>
                             <br/>{lesson.lessonSet.trainerUser.name}
@@ -239,10 +266,11 @@ class FitGridList extends React.Component {
                     title={lesson.lessonSet.lessonType.name}
                     titlePosition="bottom"
                     subtitle={freePlacesText}
-                ></GridListTileBar>
+                />
             </GridListTile>
         );
     }
+
 
     render() {
 
@@ -253,8 +281,7 @@ class FitGridList extends React.Component {
 
         const actions = [
             <Button
-                onClick={this.handleApplication}
-                disabled={!this.props.user.login}
+                onClick={this.props.user.login ? this.handleApplication : this.props.handleLoginOpen}
                 key={"button_apply_" + this.state.dialog.id}
             >{buttonLabel}</Button>,
         ];
@@ -290,6 +317,12 @@ class FitGridList extends React.Component {
                     cancel={this.state.cancel}
                     handleCancelClose={this.handleCancelClose}
                     handleCancelApplication={this.handleCancelApplication}
+                />
+                <FitQRScanner
+                    open={this.state.QRScannerOpen}
+                    handleQRScannerOpen={this.handleQRScannerOpen}
+                    handleQRScannerClose={this.handleQRScannerClose}
+                    lesson={this.state.dialog}
                 />
             </div>
         );

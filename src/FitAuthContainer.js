@@ -32,13 +32,14 @@ class FitAuthContainer extends Component {
             'loginMethod': 'auth/login/',
             'tokenLoginMethod': 'auth/tokenLogin/',
             'buyTicketMethod': 'userTicket/buy/',
-            'welcomeFormMethod':'user/welcome/'
+            'welcomeFormMethod': 'user/welcome/'
         }
     }
 
     state = {
         login: false,
-        user: {},
+        loginDialog: {open: false, codeSent: false, phone: {valid: false, frozen: false}},
+        user: {type: {id: 3}},
         snackOpen: false,
         tokenAuthTried: false,
         fitTickets: {
@@ -67,6 +68,15 @@ class FitAuthContainer extends Component {
         this.setState({'user': user});
     }.bind(this);
 
+
+    handleLoginOpen = () => {
+        this.setState({loginDialog: {open: true}})
+    }
+    handleLoginClose = () => {
+        this.setState({loginDialog: {open: false}});
+
+    }
+
     handleLogin(phone) {
 
         fetch(this.config.url.host + this.config.url.loginMethod,
@@ -85,14 +95,19 @@ class FitAuthContainer extends Component {
         }).then((data) => {
             this.setState({login: data.status, snackOpen: true});
             if (typeof data.user === 'object') {
-                this.setState({'user': data.user});
+                this.setState({
+                    'user': data.user,
+                    loginDialog: {open: false, codeSent: false, phone: {valid: false, frozen: false}}
+                });
 
                 this.cookies.set('authToken', data.token, {
-                    domain: '.stretchandgo.ru',
-                    expires: new Date( new Date().getTime()+60*60*24*30*1000)});
+                    domain: process.env.COOKIE_DOMAIN,
+                    expires: new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000)
+                });
                 this.cookies.set('authUserId', data.user.id, {
-                    domain: '.stretchandgo.ru',
-                    expires: new Date( new Date().getTime()+60*60*24*30*1000)});
+                    domain: process.env.COOKIE_DOMAIN,
+                    expires: new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000)
+                });
             } else {
 
             }
@@ -163,6 +178,9 @@ class FitAuthContainer extends Component {
                     user={this.state}
                     handleLogin={this.handleLogin}
                     handleLogout={this.handleLogout}
+                    handleLoginOpen={this.handleLoginOpen}
+                    handleLoginClose={this.handleLoginClose}
+                    loginDialog={this.state.loginDialog}
                     config={this.config}
                     handleSetUser={this.handleSetUser}
                     fitTicketsHandleOpen={this.fitTicketsHandleOpen}
@@ -180,6 +198,7 @@ class FitAuthContainer extends Component {
                 <FitGridList
                     config={this.config}
                     user={this.state}
+                    handleLoginOpen={this.handleLoginOpen}
                 />
 
                 {snackBar}
