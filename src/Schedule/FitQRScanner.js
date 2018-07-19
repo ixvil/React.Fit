@@ -70,8 +70,11 @@ class FitQRScanner extends React.Component {
         ).then(function (response) {
             return response.json();
         }).then((data) => {
-            this.props.setLessonHandler(data.lesson);
-            console.log(data);
+            if (typeof data.error !== "undefined") {
+                console.log(data.error);
+            } else {
+                this.props.setLessonHandler(data.lesson);
+            }
         }).catch((error) => {
             console.error(error);
         });
