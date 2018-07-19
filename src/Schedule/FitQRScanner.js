@@ -32,10 +32,11 @@ class FitQRScanner extends React.Component {
                 >
                     <DialogTitle>{this.props.lesson.lessonSet.lessonType.name}</DialogTitle>
                     <DialogContent>
-                        {/*<QrReader*/}
-                            {/*style={{width: '240px', height: '240px'}}*/}
-                            {/*onScan={this.handleOnScan}*/}
-                        {/*/>*/}
+                        <QrReader
+                            style={{width: '240px', height: '240px'}}
+                            onScan={this.handleOnScan}
+                            delay={1000}
+                        />
                         <LessonUserList
                             lesson={this.props.lesson}
                         />
@@ -51,9 +52,29 @@ class FitQRScanner extends React.Component {
     }
 
     handleOnScan = (result) => {
-        if (result !== null) {
-            console.log(result);
+        if (result === null) {
+            return false;
         }
+        console.log(result);
+
+        fetch(this.props.config.url.host + this.props.config.url.checkUserQR,
+            {
+                'method': 'POST',
+                'headers': {'Accept': 'application/json'},
+                'credentials': 'include',
+                'body': JSON.stringify({
+                    "lessonId": this.props.lesson.id,
+                    "clientId": result
+                })
+            }
+        ).then(function (response) {
+            return response.json();
+        }).then((data) => {
+            this.props.setLessonHandler(data.lesson);
+            console.log(data);
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 }
 

@@ -169,7 +169,7 @@ class FitAppBar extends React.Component {
                 />
                 <FitQRCode
                     open={this.state.QROpen}
-                    value={this.props.user.user.phone}
+                    value={this.props.user.user.id}
                     handleQROpen={this.handleQROpen}
                     handleQRClose={this.handleQRClose}
                 />
@@ -216,8 +216,8 @@ class FitAppBar extends React.Component {
                         </CardContent>
                     </Card>
                 </div>
-                {/*<Divider/>*/}
-                {/*<MenuItem onClick={this.handleQROpen}>Показать QR код</MenuItem>*/}
+                <Divider/>
+                <MenuItem onClick={this.handleQROpen}>Показать QR код</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.props.fitTicketsHandleOpen}>Купить абонемент</MenuItem>
                 <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>

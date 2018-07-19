@@ -91,7 +91,7 @@ class FitGridList extends React.Component {
     }
 
     handleQRScannerOpen = (lesson) => {
-        this.setState({QRScannerOpen: true,  dialog: lesson});
+        this.setState({QRScannerOpen: true, dialog: lesson});
     }
     handleQRScannerClose = () => {
         this.setState({QRScannerOpen: false});
@@ -322,7 +322,9 @@ class FitGridList extends React.Component {
                     open={this.state.QRScannerOpen}
                     handleQRScannerOpen={this.handleQRScannerOpen}
                     handleQRScannerClose={this.handleQRScannerClose}
+                    setLessonHandler={this.handleQRScannerOpen}
                     lesson={this.state.dialog}
+                    config={this.props.config}
                 />
             </div>
         );
@@ -415,7 +417,7 @@ class FitGridList extends React.Component {
             });
     }
 
-    setLessons(data) {
+    setLessons = (data) => {
         let newData = {};
         data.map((element) => {
             let day = moment(new Date(element.startDateTime)).format('YYYY-MM-DD');
@@ -426,9 +428,9 @@ class FitGridList extends React.Component {
             newData[day].push(element);
             return null;
         });
-        setTimeout(() => {
-            this.setState({'lessons': newData, 'open': false})
-        }, 5);
+        console.log('do');
+        this.setState({'lessons': newData, 'open': false})
+
     }
 
     resize = () => this.render();

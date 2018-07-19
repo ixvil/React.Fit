@@ -21,7 +21,6 @@ class FitQRCode extends React.Component {
     });
 
     render() {
-
         return (
             <MuiThemeProvider theme={this.whiteBaseTheme}>
                 <Dialog
@@ -31,7 +30,7 @@ class FitQRCode extends React.Component {
                     <DialogTitle>Ваш QR код</DialogTitle>
                     <DialogContent>
                         <QRCode
-                            value={this.props.value}
+                            value={this.props.value+''}
                             size={256}
                         />
                     </DialogContent>
