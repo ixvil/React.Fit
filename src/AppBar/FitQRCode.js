@@ -31,7 +31,7 @@ class FitQRCode extends React.Component {
                     <DialogContent>
                         <QRCode
                             value={this.props.value+''}
-                            size={256}
+                            size={220}
                         />
                     </DialogContent>
                     <DialogActions>
