@@ -428,7 +428,6 @@ class FitGridList extends React.Component {
             newData[day].push(element);
             return null;
         });
-        console.log('do');
         this.setState({'lessons': newData, 'open': false})
 
     }

@@ -220,6 +220,7 @@ class FitAppBar extends React.Component {
                 <MenuItem onClick={this.handleQROpen}>Показать QR код</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.props.fitTicketsHandleOpen}>Купить абонемент</MenuItem>
+                <MenuItem onClick={this.props.fitTicketsListHandleOpen}>Ваши абонементы</MenuItem>
                 <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>
                 <Divider/>
                 <MenuItem onClick={this.handleLogout}>Выход</MenuItem>

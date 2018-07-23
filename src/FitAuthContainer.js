@@ -12,6 +12,7 @@ import FitTickets from "./Ticket/FitTickets";
 import DocumentDialog from "./Documents/DocumentDialog";
 import {createMuiTheme} from "@material-ui/core/styles/index";
 import Footer from "./Footer";
+import FitTicketsList from "./Ticket/FitTicketsList";
 
 class FitAuthContainer extends Component {
     cookies;
@@ -41,10 +42,13 @@ class FitAuthContainer extends Component {
     state = {
         login: false,
         loginDialog: {open: false, codeSent: false, phone: {valid: false, frozen: false}},
-        user: {type: {id: 3}},
+        user: {type: {id: 3}, userTickets: []},
         snackOpen: false,
         tokenAuthTried: false,
         fitTickets: {
+            open: false
+        },
+        fitTicketsList: {
             open: false
         },
         documents: {
@@ -186,6 +190,7 @@ class FitAuthContainer extends Component {
                     config={this.config}
                     handleSetUser={this.handleSetUser}
                     fitTicketsHandleOpen={this.fitTicketsHandleOpen}
+                    fitTicketsListHandleOpen={this.fitTicketsListHandleOpen}
                     handleDocumentDialog={this.handleDocumentDialog}
                 />
                 <LogoBlock/>
@@ -195,6 +200,13 @@ class FitAuthContainer extends Component {
                     handleClose={this.fitTicketsHandleClose}
                     config={this.config}
                     handleDocumentDialog={this.handleDocumentDialog}
+                />
+
+                <FitTicketsList
+                    open={this.state.fitTicketsList.open}
+                    user={this.state.user}
+                    config={this.config}
+                    handleClose={this.fitTicketsListHandleClose}
                 />
 
                 <FitGridList
@@ -221,6 +233,12 @@ class FitAuthContainer extends Component {
     }
     fitTicketsHandleOpen = () => {
         this.setState({fitTickets: {open: true}});
+    }
+    fitTicketsListHandleOpen = () => {
+        this.setState({fitTicketsList: {open: true}});
+    }
+    fitTicketsListHandleClose = () => {
+        this.setState({fitTicketsList: {open: false}});
     }
 
     snackHandleClose = (event, reason) => {
