@@ -1,6 +1,9 @@
 import React from "react";
 
 import {
+    AppBar,
+    Toolbar,
+    IconButton,
     Button,
     Dialog,
     DialogTitle,
@@ -12,7 +15,7 @@ import {
     Typography,
     MuiThemeProvider
 } from "@material-ui/core";
-import {ExpandMore} from "@material-ui/icons"
+import {ExpandMore, Close} from "@material-ui/icons"
 import moment from "moment/moment";
 import {createMuiTheme, withStyles} from "@material-ui/core/styles/index";
 
@@ -88,11 +91,20 @@ class FitTicketsList extends React.Component {
                     open={this.props.open}
                     onClose={this.props.handleClose}
                 >
+                    <AppBar className={classes.appBar}>
+                        <Toolbar>
+                            <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
+                                <Close/>
+                            </IconButton>
+                            <Typography variant="title" color="inherit" >
+                                Ваши абонементы
+                            </Typography>
+                        </Toolbar>
+                    </AppBar>
                     <DialogTitle>Ваши абонементы</DialogTitle>
                     <DialogContent>
                         {this.props.user.userTickets.map((userTicket) => {
-                            let minDate = this.getMinDate(userTicket.lessonUsers);
-                            let maxDate = moment(minDate).add(userTicket.ticketPlan.daysToOutdated, 'day');
+                            let expireDate = this.getExpireDate(userTicket);
                             let more = userTicket.lessonUsers.map((lessonUser) => {
                                 return [
                                     <ExpansionPanelDetails>
@@ -120,7 +132,7 @@ class FitTicketsList extends React.Component {
                                                 ? <span className={classes.isActiveSpan}>Активен</span>
                                                 : <span className={classes.isNotActiveSpan}>Не активен</span>
                                             } <br/>
-                                            Истекает {maxDate.format('DD.MM.YYYY')}
+                                            Истекает {expireDate.format('DD.MM.YYYY')}
                                         </Typography>
                                         <Typography className={classes.default}>
                                             Ост:{userTicket.lessonsExpires} <br/>
@@ -147,17 +159,26 @@ class FitTicketsList extends React.Component {
 
     }
 
-    getMinDate(lessonUsers) {
-        let minDate = new Date();
+    getExpireDate(userTicket) {
+        let lessonUsers = userTicket.lessonUsers;
+        let minDate = new Date(userTicket.dateCreatedAt);
+        let outDating = 92;
+
+        let ddate = null;
+
         for (let i = 0; i < lessonUsers.length; i++) {
             let lessonUser = lessonUsers[i];
             let curDate = new Date(lessonUser.lesson.startDateTime);
-            if (curDate < minDate) {
+            if (curDate < minDate || ddate === null) {
+
                 minDate = curDate;
+                ddate = minDate;
+                outDating = userTicket.ticketPlan.daysToOutdated;
             }
         }
 
-        return minDate;
+        return moment(minDate).add(outDating, 'day');
+
     }
 
 }
