@@ -69,19 +69,70 @@ class FitTicketsList extends React.Component {
     render() {
         const {classes} = this.props;
         console.log(this.props.user);
+        let dialogContent;
+        if (typeof this.props.user.userTickets === 'undefined' || this.props.user.userTickets.length === 0) {
+            dialogContent =
+                <DialogContent><Typography>Вы еще не приобрели ни одного абонемента</Typography></DialogContent>;
+        } else {
+            this.props.user.userTickets.sort(
+                function (a, b) {
+                    if (a.dateCreatedAt < b.dateCreatedAt) {
+                        return 1;
+                    }
+                    if (a.dateCreatedAt > b.dateCreatedAt) {
+                        return -1;
+                    }
+                    return 0;
 
-        this.props.user.userTickets.sort(
-            function (a, b) {
-                if (a.dateCreatedAt < b.dateCreatedAt) {
-                    return 1;
                 }
-                if (a.dateCreatedAt > b.dateCreatedAt) {
-                    return -1;
-                }
-                return 0;
+            );
 
-            }
-        );
+            dialogContent = <DialogContent>
+                {this.props.user.userTickets.map((userTicket) => {
+                    let expireDate = this.getExpireDate(userTicket);
+                    let more = userTicket.lessonUsers.map((lessonUser) => {
+                        return [
+                            <ExpansionPanelDetails>
+
+                                <Typography className={classes.mobHeading}>
+                                    {lessonUser.lesson.lessonSet.lessonType.name} <br/>
+                                    {lessonUser.lesson.lessonSet.trainerUser.name}
+                                </Typography>
+                                <Typography className={classes.mobHeading}>
+                                    {moment(new Date(lessonUser.lesson.startDateTime)).format('LT DD.MM.YYYY')}<br/>
+                                    {lessonUser.lesson.hall.name}
+                                </Typography>
+
+                            </ExpansionPanelDetails>
+                        ];
+                    });
+
+                    return (
+                        <ExpansionPanel className={userTicket.isActive ? null : classes.inactivePanel}>
+                            <ExpansionPanelSummary key={userTicket.id} expandIcon={<ExpandMore/>}>
+                                <Typography className={classes.subHeader}>
+                                    {userTicket.ticketPlan.name} <br/>
+
+                                    {userTicket.isActive
+                                        ? <span className={classes.isActiveSpan}>Активен</span>
+                                        : <span className={classes.isNotActiveSpan}>Не активен</span>
+                                    } <br/>
+                                    Истекает {expireDate.format('DD.MM.YYYY')}
+                                </Typography>
+                                <Typography className={classes.default}>
+                                    Ост:{userTicket.lessonsExpires} <br/>
+                                    Исп:{userTicket.lessonUsers.length}
+                                </Typography>
+                                {/*<Typography>{moment(new Date(minDate)).format('DD.MM.YYYY')}</Typography>*/}
+                            </ExpansionPanelSummary>
+                            {more}
+                        </ExpansionPanel>
+                    );
+                })}
+
+            </DialogContent>;
+        }
+
 
         return (
             <MuiThemeProvider theme={this.whiteBaseTheme}>
@@ -96,56 +147,13 @@ class FitTicketsList extends React.Component {
                             <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
                                 <Close/>
                             </IconButton>
-                            <Typography variant="title" color="inherit" >
+                            <Typography variant="title" color="inherit">
                                 Ваши абонементы
                             </Typography>
                         </Toolbar>
                     </AppBar>
                     <DialogTitle>Ваши абонементы</DialogTitle>
-                    <DialogContent>
-                        {this.props.user.userTickets.map((userTicket) => {
-                            let expireDate = this.getExpireDate(userTicket);
-                            let more = userTicket.lessonUsers.map((lessonUser) => {
-                                return [
-                                    <ExpansionPanelDetails>
-
-                                        <Typography className={classes.mobHeading}>
-                                            {lessonUser.lesson.lessonSet.lessonType.name} <br/>
-                                            {lessonUser.lesson.lessonSet.trainerUser.name}
-                                        </Typography>
-                                        <Typography className={classes.mobHeading}>
-                                            {moment(new Date(lessonUser.lesson.startDateTime)).format('LT DD.MM.YYYY')}<br/>
-                                            {lessonUser.lesson.hall.name}
-                                        </Typography>
-
-                                    </ExpansionPanelDetails>
-                                ];
-                            });
-
-                            return (
-                                <ExpansionPanel className={userTicket.isActive ? null : classes.inactivePanel}>
-                                    <ExpansionPanelSummary key={userTicket.id} expandIcon={<ExpandMore/>}>
-                                        <Typography className={classes.subHeader}>
-                                            {userTicket.ticketPlan.name} <br/>
-
-                                            {userTicket.isActive
-                                                ? <span className={classes.isActiveSpan}>Активен</span>
-                                                : <span className={classes.isNotActiveSpan}>Не активен</span>
-                                            } <br/>
-                                            Истекает {expireDate.format('DD.MM.YYYY')}
-                                        </Typography>
-                                        <Typography className={classes.default}>
-                                            Ост:{userTicket.lessonsExpires} <br/>
-                                            Исп:{userTicket.lessonUsers.length}
-                                        </Typography>
-                                        {/*<Typography>{moment(new Date(minDate)).format('DD.MM.YYYY')}</Typography>*/}
-                                    </ExpansionPanelSummary>
-                                    {more}
-                                </ExpansionPanel>
-                            );
-                        })}
-
-                    </DialogContent>
+                    {dialogContent}
                     <DialogActions>
                         <Button
                             onClick={this.props.handleClose}>

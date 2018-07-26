@@ -71,7 +71,7 @@ class WelcomeForm extends React.Component {
             if (typeof data.error !== "undefined") {
                 alert(data.error);
             } else {
-                this.props.handleSetUser(data);
+                this.props.handleSetUser(data.user);
                 this.props.handleCloseWelcome();
             }
         }).catch((error) => {
