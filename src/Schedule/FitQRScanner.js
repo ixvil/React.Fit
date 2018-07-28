@@ -43,7 +43,9 @@ class FitQRScanner extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            this.closeLesson(this.props.lesson)
+                            if (window.confirm('Вы уверены, что хотите закрыть запись на это занятие?')) {
+                                this.closeLesson(this.props.lesson);
+                            }
                         }}>
                             Закрыть запись
                         </Button>
@@ -57,6 +59,7 @@ class FitQRScanner extends React.Component {
     }
 
     closeLesson = (lesson) => {
+
         fetch(this.props.config.url.host + this.props.config.url.closeLesson, {
                 'method': 'POST',
                 'headers': {'Accept': 'application/json'},
