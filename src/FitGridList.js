@@ -57,8 +57,10 @@ class FitGridList extends React.Component {
                 },
                 trainerUser: {
                     name: ''
-                }
+                },
+                usersLimit: 0
             },
+            overriddenUsersLimit: null,
             lessonUsers: [],
             hall: {
                 name: 'hall'
@@ -206,8 +208,13 @@ class FitGridList extends React.Component {
     getNextTile(lesson) {
 
         let iconButton = null;
+        let limit = lesson.lessonSet.usersLimit;
 
-        const canApply = (lesson.lessonSet.usersLimit - lesson.lessonUsers.length) > 0;
+        if (lesson.overriddenUsersLimit !== null) {
+            limit = lesson.overriddenUsersLimit;
+        }
+
+        const canApply = (limit - lesson.lessonUsers.length) > 0;
 
         if (canApply && this.props.user.user.type.id === 3) {
             iconButton = <IconButton>
@@ -218,7 +225,7 @@ class FitGridList extends React.Component {
             </IconButton>;
         }
         const freePlacesText = canApply
-            ? 'Осталось ' + (lesson.lessonSet.usersLimit - lesson.lessonUsers.length) + ' мест'
+            ? 'Осталось ' + (limit - lesson.lessonUsers.length) + ' мест'
             : (<b>Мест нет</b>)
         ;
 

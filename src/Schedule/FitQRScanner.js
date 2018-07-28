@@ -42,6 +42,11 @@ class FitQRScanner extends React.Component {
                         />
                     </DialogContent>
                     <DialogActions>
+                        <Button onClick={() => {
+                            this.closeLesson(this.props.lesson)
+                        }}>
+                            Закрыть запись
+                        </Button>
                         <Button onClick={this.props.handleQRScannerClose}>
                             OK
                         </Button>
@@ -49,6 +54,28 @@ class FitQRScanner extends React.Component {
                 </Dialog>
             </MuiThemeProvider>
         );
+    }
+
+    closeLesson = (lesson) => {
+        fetch(this.props.config.url.host + this.props.config.url.closeLesson, {
+                'method': 'POST',
+                'headers': {'Accept': 'application/json'},
+                'credentials': 'include',
+                'body': JSON.stringify({
+                    "lessonId": lesson.id
+                })
+            }
+        ).then(function (response) {
+            return response.json();
+        }).then((data) => {
+            if (typeof data.error !== "undefined") {
+                console.log(data.error);
+            } else {
+                this.props.setLessonHandler(data.lesson);
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     handleOnScan = (result) => {

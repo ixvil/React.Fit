@@ -34,8 +34,8 @@ class FitAuthContainer extends Component {
             'tokenLoginMethod': 'auth/tokenLogin/',
             'buyTicketMethod': 'userTicket/buy/',
             'welcomeFormMethod': 'user/welcome/',
-            'checkUserQR': 'lessonUser/check'
-
+            'checkUserQR': 'lessonUser/check',
+            'closeLesson': 'lesson/close'
         }
     }
 
