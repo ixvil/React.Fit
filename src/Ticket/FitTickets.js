@@ -37,8 +37,17 @@ class FitTickets extends React.Component {
         },
     });
 
+    state = {
+        ticketPlans: []
+    }
+
     render() {
         const {classes} = this.props;
+
+        if (this.state.ticketPlans.length === 0 && typeof this.props.user.id !== 'undefined') {
+            this.getTicketPlans();
+        }
+
         return (
             <MuiThemeProvider theme={this.whiteBaseTheme}>
                 <Dialog
@@ -57,18 +66,7 @@ class FitTickets extends React.Component {
                             </Typography>
                         </Toolbar>
                     </AppBar>
-                    <List>
-                        <ListItem button>
-                            <ListItemText onClick={this.buyTicketHandle8} primary="Абонемент на 8 занятий"
-                                          secondary="4000 р."/>
-                        </ListItem>
-                        <Divider/>
-                        <ListItem button>
-                            <ListItemText onClick={this.buyTicketHandle1} primary="Разовое посещение"
-                                          secondary="700 р."/>
-                        </ListItem>
-                        <Divider/>
-                    </List>
+                    {this.getTicketPlansList()}
                     <DialogContent>
                         <Typography>
                             *Приобретая абонемент на сайте, вы соглашаетесь с Правилами студии и Договором присоединения
@@ -89,12 +87,49 @@ class FitTickets extends React.Component {
         );
     }
 
-    buyTicketHandle8 = () => {
-        this.buyTicket(1);
+    getTicketPlansList = () => {
+        return (
+            <List key={0}>
+                {this.state.ticketPlans.map((ticketPlan) => {
+                    let secondary = ticketPlan.price;
+                    if (ticketPlan.oldPrice !== null) {
+                        secondary += ' (Цена без скидки ' + ticketPlan.oldPrice + ')';
+                    }
+                    return [
+                        <ListItem button key={ticketPlan.id}>
+                            <ListItemText
+                                onClick={() => {
+                                    this.buyTicket(ticketPlan.id)
+                                }}
+                                primary={ticketPlan.name}
+                                secondary={secondary}
+                            />
+                        </ListItem>,
+                        <Divider/>
+                    ];
+                })}
+            </List>
+        );
     }
 
-    buyTicketHandle1 = () => {
-        this.buyTicket(3);
+    getTicketPlans = (userId) => {
+        fetch(this.props.config.url.host + this.props.config.url.getTicketPlans,
+            {
+                'method': 'POST',
+                'headers': {'Accept': 'application/json'},
+                'credentials': 'include',
+                'body': JSON.stringify({
+                    "userId": userId
+                })
+            }
+        ).then(function (response) {
+            return response.json();
+        }).then((data) => {
+            this.setState({ticketPlans: data.ticketPlans});
+            console.log(data);
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     buyTicket = (type) => {

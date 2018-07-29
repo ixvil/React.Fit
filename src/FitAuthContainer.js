@@ -35,7 +35,8 @@ class FitAuthContainer extends Component {
             'buyTicketMethod': 'userTicket/buy/',
             'welcomeFormMethod': 'user/welcome/',
             'checkUserQR': 'lessonUser/check',
-            'closeLesson': 'lesson/close'
+            'closeLesson': 'lesson/close',
+            'getTicketPlans': 'ticketPlan/'
         }
     }
 
@@ -197,6 +198,7 @@ class FitAuthContainer extends Component {
 
                 <FitTickets
                     open={this.state.fitTickets.open}
+                    user={this.state.user}
                     handleClose={this.fitTicketsHandleClose}
                     config={this.config}
                     handleDocumentDialog={this.handleDocumentDialog}

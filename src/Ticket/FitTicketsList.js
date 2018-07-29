@@ -108,7 +108,7 @@ class FitTicketsList extends React.Component {
                     });
 
                     return (
-                        <ExpansionPanel className={userTicket.isActive ? null : classes.inactivePanel}>
+                        <ExpansionPanel className={userTicket.isActive ? null : classes.inactivePanel} key={userTicket.id}>
                             <ExpansionPanelSummary key={userTicket.id} expandIcon={<ExpandMore/>}>
                                 <Typography className={classes.subHeader}>
                                     {userTicket.ticketPlan.name} <br/>
