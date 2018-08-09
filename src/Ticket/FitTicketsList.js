@@ -108,7 +108,8 @@ class FitTicketsList extends React.Component {
                     });
 
                     return (
-                        <ExpansionPanel className={userTicket.isActive ? null : classes.inactivePanel} key={userTicket.id}>
+                        <ExpansionPanel className={userTicket.isActive ? null : classes.inactivePanel}
+                                        key={userTicket.id}>
                             <ExpansionPanelSummary key={userTicket.id} expandIcon={<ExpandMore/>}>
                                 <Typography className={classes.subHeader}>
                                     {userTicket.ticketPlan.name} <br/>
@@ -117,7 +118,7 @@ class FitTicketsList extends React.Component {
                                         ? <span className={classes.isActiveSpan}>Активен</span>
                                         : <span className={classes.isNotActiveSpan}>Не активен</span>
                                     } <br/>
-                                    Истекает {expireDate.format('DD.MM.YYYY')}
+                                    Истекает до {expireDate.format('DD.MM.YYYY')}
                                 </Typography>
                                 <Typography className={classes.default}>
                                     Ост:{userTicket.lessonsExpires} <br/>
@@ -168,24 +169,7 @@ class FitTicketsList extends React.Component {
     }
 
     getExpireDate(userTicket) {
-        let lessonUsers = userTicket.lessonUsers;
-        let minDate = new Date(userTicket.dateCreatedAt);
-        let outDating = 92;
-
-        let ddate = null;
-
-        for (let i = 0; i < lessonUsers.length; i++) {
-            let lessonUser = lessonUsers[i];
-            let curDate = new Date(lessonUser.lesson.startDateTime);
-            if (curDate < minDate || ddate === null) {
-
-                minDate = curDate;
-                ddate = minDate;
-                outDating = userTicket.ticketPlan.daysToOutdated;
-            }
-        }
-
-        return moment(minDate).add(outDating, 'day');
+        return moment(userTicket.expirationDate);
 
     }
 

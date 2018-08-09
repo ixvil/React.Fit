@@ -210,7 +210,8 @@ class FitAppBar extends React.Component {
                         />
                         <CardContent>
                             <Typography>
-                                Свободных занятий: {this.countAvailableLessons(this.props.user.user.userTickets)} <br/>
+                                Свободных занятий: {this.countAvailableLessons(this.props.user.user.userTickets, [1,2])} <br/>
+                                Персональных тренировок: {this.countAvailableLessons(this.props.user.user.userTickets, [3])} <br/>
                                 Бонусных баллов: 0
                             </Typography>
                         </CardContent>
@@ -381,12 +382,18 @@ class FitAppBar extends React.Component {
         }
     }
 
-    countAvailableLessons(userTickets) {
+    countAvailableLessons(userTickets, availableTypes) {
         if (typeof userTickets !== 'object') {
             return 0;
         }
 
         let countTickets = userTickets.map((ticket) => {
+            if (ticket.isActive === false) {
+                return 0;
+            }
+            if (!availableTypes.includes(ticket.ticketPlan.type.id)) {
+                return 0;
+            }
             return ticket.lessonsExpires;
         });
         if (countTickets.length == 0) {
