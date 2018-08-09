@@ -51,7 +51,7 @@ class FitTickets extends React.Component {
         return (
             <MuiThemeProvider theme={this.whiteBaseTheme}>
                 <Dialog
-                    fullWidth
+                    fullScreen
                     maxWidth='md'
                     open={this.props.open}
                     onClose={this.props.handleClose}
