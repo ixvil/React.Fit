@@ -20,6 +20,7 @@ import {
 
 import CloseIcon from "@material-ui/icons/Close"
 import {createMuiTheme} from "@material-ui/core/styles/index";
+import FitAloneSwitch from "../Tools/FitAloneSwitch";
 
 const styles = {
     appBar: {
@@ -38,7 +39,8 @@ class FitTickets extends React.Component {
     });
 
     state = {
-        ticketPlans: []
+        ticketPlans: [],
+        useBonus: false
     }
 
     render() {
@@ -68,6 +70,12 @@ class FitTickets extends React.Component {
                     </AppBar>
                     {this.getTicketPlansList()}
                     <DialogContent>
+                        <FitAloneSwitch
+                            onChange={this.handleChangeUseBonus}
+                            checked={this.state.useBonus}
+                            label={"Использовать " + this.props.user.bonusBalance + " баллов"}
+                            disabled={this.props.user.bonusBalance <= 0}
+                        />
                         <Typography>
                             *Приобретая абонемент на сайте, вы соглашаетесь с Правилами студии и Договором присоединения
                         </Typography>
@@ -99,7 +107,7 @@ class FitTickets extends React.Component {
                         <ListItem button key={ticketPlan.id}>
                             <ListItemText
                                 onClick={() => {
-                                    this.buyTicket(ticketPlan.id)
+                                    this.buyTicket(ticketPlan.id, this.state.useBonus)
                                 }}
                                 primary={ticketPlan.name}
                                 secondary={secondary}
@@ -112,34 +120,38 @@ class FitTickets extends React.Component {
         );
     }
 
-    getTicketPlans = (userId) => {
+    getTicketPlans = (useBonus = false) => {
         fetch(this.props.config.url.host + this.props.config.url.getTicketPlans,
             {
                 'method': 'POST',
                 'headers': {'Accept': 'application/json'},
                 'credentials': 'include',
                 'body': JSON.stringify({
-                    "userId": userId
+                    "useBonus": useBonus
                 })
             }
         ).then(function (response) {
             return response.json();
         }).then((data) => {
-            this.setState({ticketPlans: data.ticketPlans});
+            this.setState({
+                ticketPlans: data.ticketPlans,
+                useBonus: useBonus
+            });
             console.log(data);
         }).catch((error) => {
             console.error(error);
         });
     }
 
-    buyTicket = (type) => {
+    buyTicket = (type, useBonus = false) => {
         fetch(this.props.config.url.host + this.props.config.url.buyTicketMethod,
             {
                 'method': 'POST',
                 'headers': {'Accept': 'application/json'},
                 'credentials': 'include',
                 'body': JSON.stringify({
-                    "ticket_plan_id": type
+                    "ticket_plan_id": type,
+                    "useBonus": useBonus
                 })
             }
         ).then(function (response) {
@@ -152,6 +164,10 @@ class FitTickets extends React.Component {
         }).catch((error) => {
             console.error(error);
         });
+    }
+
+    handleChangeUseBonus = (object) => {
+        this.getTicketPlans(object.target.checked);
     }
 
 }
