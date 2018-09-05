@@ -210,7 +210,7 @@ class FitAppBar extends React.Component {
                         />
                         <CardContent>
                             <Typography>
-                                Свободных занятий: {this.countAvailableLessons(this.props.user.user.userTickets, [1,2])} <br/>
+                                Свободных занятий: {this.countAvailableLessons(this.props.user.user.userTickets, [1,2,4])} <br/>
                                 Персональных тренировок: {this.countAvailableLessons(this.props.user.user.userTickets, [3])} <br/>
                                 Бонусных баллов: {this.props.user.user.bonusBalance}
                             </Typography>

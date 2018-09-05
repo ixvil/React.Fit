@@ -1,10 +1,16 @@
 import React from "react";
 import {
+    Card,
+    CardMedia,
+    CardHeader,
+    CardActions,
+    CardContent,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogContentText,
     DialogActions,
+    Typography,
     Button,
     GridList,
     GridListTile,
@@ -281,9 +287,17 @@ class FitGridList extends React.Component {
 
     render() {
 
-        let buttonLabel = "Согласен";
+        let buttonLabel = "Записаться";
         if (this.props.user.login === false) {
             buttonLabel = "Авторизуйтесь, что бы записаться"
+        }
+        let trainerPhoto = null;
+        if (this.state.dialog.lessonSet.photo) {
+            trainerPhoto = <img
+                src={this.state.dialog.lessonSet.photo}
+                title="Trainer photo"
+                className="trainerPhoto"
+            />;
         }
 
         const actions = [
@@ -306,11 +320,12 @@ class FitGridList extends React.Component {
                     <br/>
                     Тренер: {this.state.dialog.lessonSet.trainerUser.name} <br/>
                     Осталось: {this.state.dialog.lessonSet.usersLimit - this.state.dialog.lessonUsers.length} мест
-                    <br/>
                 </DialogContentText>
                 <DialogActions>
                     {actions}
                 </DialogActions>
+                {trainerPhoto ? this.getTrainerDescriptionBlock(trainerPhoto, actions) : null}
+
             </DialogContent>
         </Dialog>;
 
@@ -335,6 +350,27 @@ class FitGridList extends React.Component {
                 />
             </div>
         );
+    }
+
+    getTrainerDescriptionBlock(trainerPhoto, actions) {
+        return [
+            <DialogContentText>
+                {trainerPhoto}
+
+                <Typography>
+                    {this.state.dialog.lessonSet.description}
+                </Typography>
+                <br/>
+                <Typography>
+                    Осталось: {this.state.dialog.lessonSet.usersLimit - this.state.dialog.lessonUsers.length} мест
+                </Typography>
+
+
+            </DialogContentText>,
+            <DialogActions>
+                {actions}
+            </DialogActions>
+        ];
     }
 
     getGridList() {
