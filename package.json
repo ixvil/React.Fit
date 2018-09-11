@@ -11,7 +11,8 @@
     "hoek": "^5.0.3",
     "libphonenumber-js": "^1.2.22",
     "moment": "^2.22.2",
-    "npm": "^6.2.0",
+    "moment-timezone": "^0.5.21",
+    "npm": "^6.4.1",
     "qrcode.react": "^0.8.0",
     "react": "^16.4.1",
     "react-addons-shallow-compare": "^15.6.2",
@@ -24,7 +25,7 @@
     "react-qr-reader": "^2.1.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^1.1.5",
     "react-text-mask": "^5.4.2",
     "universal-cookie": "^2.2.0"
   },

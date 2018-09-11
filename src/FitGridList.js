@@ -18,7 +18,7 @@ import {
     GridListTileBar
 } from "@material-ui/core";
 import {Add, Done, PlaylistAddCheck} from '@material-ui/icons'
-import moment from "moment";
+import moment from "moment-timezone";
 import ru from 'moment/locale/ru'
 import ArrayTools from "./Tools/ArrayTools";
 import UnApplyDialog from "./Schedule/UnApplyDialog";
@@ -267,7 +267,7 @@ class FitGridList extends React.Component {
             >
                 <img src={lesson.lessonSet.lessonType.image} alt=''/>
                 <GridListTileBar
-                    title={moment(new Date(lesson.startDateTime)).format('LT') + ' ' + lesson.hall.name}
+                    title={moment(new Date(lesson.startDateTime)).tz("Europe/Moscow").format('LT') + ' ' + lesson.hall.name}
                     titlePosition="top"
                     actionIcon={iconButton}
                     subtitle={
@@ -316,7 +316,7 @@ class FitGridList extends React.Component {
                 <DialogContentText>
                     {this.state.dialog.lessonSet.lessonType.name} проходит в {this.state.dialog.hall.name}. <br/>
                     Время проведение
-                    занятия: {moment(new Date(this.state.dialog.startDateTime)).format('LT DD.MM.YYYY')}
+                    занятия: {moment(new Date(this.state.dialog.startDateTime)).tz("Europe/Moscow").format('LT DD.MM.YYYY')}
                     <br/>
                     Тренер: {this.state.dialog.lessonSet.trainerUser.name} <br/>
                     Осталось: {this.state.dialog.lessonSet.usersLimit - this.state.dialog.lessonUsers.length} мест
@@ -463,7 +463,7 @@ class FitGridList extends React.Component {
     setLessons = (data) => {
         let newData = {};
         data.map((element) => {
-            let day = moment(new Date(element.startDateTime)).format('YYYY-MM-DD');
+            let day = moment(new Date(element.startDateTime)).tz("Europe/Moscow").format('YYYY-MM-DD');
 
             if (typeof(newData[day]) !== 'object') {
                 newData[day] = [];
