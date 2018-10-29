@@ -18,6 +18,7 @@ import {
 import {ExpandMore, Close} from "@material-ui/icons"
 import moment from "moment/moment";
 import {createMuiTheme, withStyles} from "@material-ui/core/styles/index";
+import Expiration from "../Tools/Expiration";
 
 const styles = {
 
@@ -89,7 +90,7 @@ class FitTicketsList extends React.Component {
 
             dialogContent = <DialogContent>
                 {this.props.user.userTickets.map((userTicket) => {
-                    let expireDate = this.getExpireDate(userTicket);
+                    let expireDate = Expiration.getDate(userTicket);
                     let more = userTicket.lessonUsers.map((lessonUser) => {
                         return [
                             <ExpansionPanelDetails>
@@ -167,12 +168,6 @@ class FitTicketsList extends React.Component {
         );
 
     }
-
-    getExpireDate(userTicket) {
-        return moment(userTicket.expirationDate);
-
-    }
-
 }
 
 export default withStyles(styles)(FitTicketsList);

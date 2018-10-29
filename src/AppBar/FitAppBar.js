@@ -17,6 +17,7 @@ import FitPromoCode from "./FitPromoCode";
 import WelcomeForm from "./WelcomeForm";
 import {withStyles} from "@material-ui/core/styles/index";
 import FitQRCode from "./FitQRCode";
+import FitExpiration from "./FitExpiration";
 
 
 class FitAppBar extends React.Component {
@@ -173,6 +174,12 @@ class FitAppBar extends React.Component {
                     handleQROpen={this.handleQROpen}
                     handleQRClose={this.handleQRClose}
                 />
+                <FitExpiration
+                    open={this.state.expirationOpen}
+                    handleOpen={this.handleExpirationOpen}
+                    handleClose={this.handleExpirationClose}
+                    config={this.props.config}
+                />
             </div>
 
         );
@@ -210,8 +217,10 @@ class FitAppBar extends React.Component {
                         />
                         <CardContent>
                             <Typography>
-                                Свободных занятий: {this.countAvailableLessons(this.props.user.user.userTickets, [1,2,4])} <br/>
-                                Персональных тренировок: {this.countAvailableLessons(this.props.user.user.userTickets, [3])} <br/>
+                                Свободных
+                                занятий: {this.countAvailableLessons(this.props.user.user.userTickets, [1, 2, 4])} <br/>
+                                Персональных
+                                тренировок: {this.countAvailableLessons(this.props.user.user.userTickets, [3])} <br/>
                                 Бонусных баллов: {this.props.user.user.bonusBalance}
                             </Typography>
                         </CardContent>
@@ -224,10 +233,30 @@ class FitAppBar extends React.Component {
                 <MenuItem onClick={this.props.fitTicketsListHandleOpen}>Ваши абонементы</MenuItem>
                 <MenuItem onClick={this.handlePromoCodeOpen}>Ввести промокод</MenuItem>
                 <Divider/>
+                {typeof this.props.user.user.type !== 'undefined' && this.props.user.user.type.id === 1 ? this.getAdminMenu() : null}
                 <MenuItem onClick={this.handleLogout}>Выход</MenuItem>
             </Drawer>
 
         );
+    }
+
+    getAdminMenu() {
+        return [
+            <MenuItem onClick={this.handleExpirationOpen}>Заканчивающиеся абонементы</MenuItem>,
+            <Divider/>
+        ];
+    }
+
+    handleExpirationOpen = () => {
+        this.setState({
+            expirationOpen: true
+        });
+    }
+
+    handleExpirationClose = () => {
+        this.setState({
+            expirationOpen: false
+        });
     }
 
     handleQROpen = () => {
