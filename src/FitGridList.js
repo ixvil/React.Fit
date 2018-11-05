@@ -5,12 +5,14 @@ import {
     CardHeader,
     CardActions,
     CardContent,
+    LinearProgress,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogContentText,
     DialogActions,
     Typography,
+    CircularProgress,
     Button,
     GridList,
     GridListTile,
@@ -375,7 +377,10 @@ class FitGridList extends React.Component {
 
     getGridList() {
         if (Object.keys(this.state.lessons).length === 0) {
-            return;
+            return [
+                <CircularProgress/>,
+                <LinearProgress/>
+            ];
         }
         return (
             <GridList

@@ -32,22 +32,24 @@ class FitQRScanner extends React.Component {
                 >
                     <DialogTitle>{this.props.lesson.lessonSet.lessonType.name}</DialogTitle>
                     <DialogContent>
+                        <LessonUserList
+                            lesson={this.props.lesson}
+                        />
                         <QrReader
                             style={{width: '240px', height: '240px'}}
                             onScan={this.handleOnScan}
                             delay={1000}
                         />
-                        <LessonUserList
-                            lesson={this.props.lesson}
-                        />
+
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            if (window.confirm('Вы уверены, что хотите закрыть запись на это занятие?')) {
-                                this.closeLesson(this.props.lesson);
+                            let count = window.prompt('Сколько всего мест будет на этом занятии?');
+                            if (count === '0' || count >= 1) {
+                                this.closeLesson(this.props.lesson, count);
                             }
                         }}>
-                            Закрыть запись
+                            Мест
                         </Button>
                         <Button onClick={this.props.handleQRScannerClose}>
                             OK
@@ -58,14 +60,15 @@ class FitQRScanner extends React.Component {
         );
     }
 
-    closeLesson = (lesson) => {
+    closeLesson = (lesson, count) => {
 
         fetch(this.props.config.url.host + this.props.config.url.closeLesson, {
                 'method': 'POST',
                 'headers': {'Accept': 'application/json'},
                 'credentials': 'include',
                 'body': JSON.stringify({
-                    "lessonId": lesson.id
+                    "lessonId": lesson.id,
+                    "count": count
                 })
             }
         ).then(function (response) {
