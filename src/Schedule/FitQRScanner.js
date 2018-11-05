@@ -34,6 +34,7 @@ class FitQRScanner extends React.Component {
                     <DialogContent>
                         <LessonUserList
                             lesson={this.props.lesson}
+                            clickHandler={this.handleOnScan}
                         />
                         <QrReader
                             style={{width: '240px', height: '240px'}}
@@ -88,7 +89,6 @@ class FitQRScanner extends React.Component {
         if (result === null) {
             return false;
         }
-        console.log(result);
 
         fetch(this.props.config.url.host + this.props.config.url.checkUserQR,
             {

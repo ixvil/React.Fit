@@ -36,6 +36,11 @@ class LessonUserList extends React.Component {
                         return (
                             <ListItem
                                 key={lessonUser.id}
+                                onClick={() => {
+                                    if (window.confirm(lessonUser.user.name + " пришла на занятие?")) {
+                                        this.props.clickHandler(lessonUser.user.id);
+                                    }
+                                }}
                             >
                                 <ListItemText>{lessonUser.user.name}<br/>{lessonUser.user.phone} </ListItemText>
                                 {button}
