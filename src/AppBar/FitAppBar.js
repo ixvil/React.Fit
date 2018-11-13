@@ -18,7 +18,8 @@ import WelcomeForm from "./WelcomeForm";
 import {withStyles} from "@material-ui/core/styles/index";
 import FitQRCode from "./FitQRCode";
 import FitExpiration from "./FitExpiration";
-
+import {Phone} from "@material-ui/icons";
+import green from '@material-ui/core/colors/green';
 
 class FitAppBar extends React.Component {
 
@@ -59,6 +60,15 @@ class FitAppBar extends React.Component {
             width: '100%',
             height: '1px',
             float: 'left'
+        },
+        fab: {
+            position: 'fixed',
+            right: '1em',
+            backgroundColor: green[500],
+            color: 'white',
+            width: '3em',
+            height: '3em',
+
         }
 
 
@@ -154,6 +164,14 @@ class FitAppBar extends React.Component {
                             color="inherit"
                             onClick={() => this.props.handleDocumentDialog('contacts')}
                         >Контакты</Button>
+
+                        <Button
+                            className={classes.fab}
+                            variant={"fab"}
+                            onClick={() => window.location.href = 'tel:+7(906)0180010'}
+                        >
+                            <Phone/>
+                        </Button>
 
                     </Toolbar>
                 </AppBar>
