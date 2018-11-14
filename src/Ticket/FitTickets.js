@@ -1,7 +1,6 @@
 import React from "react";
 import {withStyles} from '@material-ui/core/styles';
 import {MuiThemeProvider} from '@material-ui/core';
-
 import {
     AppBar,
     Button,
@@ -21,6 +20,8 @@ import {
 import CloseIcon from "@material-ui/icons/Close"
 import {createMuiTheme} from "@material-ui/core/styles/index";
 import FitAloneSwitch from "../Tools/FitAloneSwitch";
+import ym from "react-yandex-metrika";
+import YMHelper from "../Tools/YMHelper";
 
 const styles = {
     appBar: {
@@ -158,6 +159,7 @@ class FitTickets extends React.Component {
             return response.json();
         }).then((data) => {
             if (data.status === 'ok') {
+                ym('reachGoal', YMHelper.YM_GOAL_PAY_START);
                 window.location.href = data.formUrl;
             }
             console.log(data);

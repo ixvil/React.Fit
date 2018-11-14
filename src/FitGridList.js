@@ -25,6 +25,8 @@ import ru from 'moment/locale/ru'
 import ArrayTools from "./Tools/ArrayTools";
 import UnApplyDialog from "./Schedule/UnApplyDialog";
 import FitQRScanner from "./Schedule/FitQRScanner";
+import ym from "react-yandex-metrika";
+import YMHelper from "./Tools/YMHelper";
 
 class FitGridList extends React.Component {
 
@@ -127,6 +129,7 @@ class FitGridList extends React.Component {
                 if (typeof data.error !== "undefined") {
                     alert(data.error);
                 } else {
+                    ym('reachGoal', YMHelper.YM_GOAL_ACCEPT);
                     alert('Ура! Вы записаны за занятие');
                     this.setLessons(data.lessons);
                     this.setState({'user': data.user});

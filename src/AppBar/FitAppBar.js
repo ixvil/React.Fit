@@ -20,6 +20,8 @@ import FitQRCode from "./FitQRCode";
 import FitExpiration from "./FitExpiration";
 import {Phone} from "@material-ui/icons";
 import green from '@material-ui/core/colors/green';
+import YMHelper from "../Tools/YMHelper";
+import ym from 'react-yandex-metrika';
 
 class FitAppBar extends React.Component {
 
@@ -104,6 +106,7 @@ class FitAppBar extends React.Component {
 
     handleCodeSending = () => {
         this.setState({codeSent: true, phoneFrozen: true});
+        ym('reachGoal', YMHelper.YM_GOAL_CODE_SENT);
         this.requestCode();
     }
 
@@ -168,7 +171,10 @@ class FitAppBar extends React.Component {
                         <Button
                             className={classes.fab}
                             variant={"fab"}
-                            onClick={() => window.location.href = 'tel:+7(906)0180010'}
+                            onClick={() => {
+                                ym('reachGoal', YMHelper.YM_GOAL_CALL);
+                                window.location.href = 'tel:+7(906)0180010';
+                            }}
                         >
                             <Phone/>
                         </Button>

@@ -13,7 +13,9 @@ import DocumentDialog from "./Documents/DocumentDialog";
 import {createMuiTheme} from "@material-ui/core/styles/index";
 import Footer from "./Footer";
 import FitTicketsList from "./Ticket/FitTicketsList";
-
+import {YMInitializer} from 'react-yandex-metrika';
+import ym from "react-yandex-metrika";
+import YMHelper from "./Tools/YMHelper";
 class FitAuthContainer extends Component {
     cookies;
 
@@ -78,6 +80,7 @@ class FitAuthContainer extends Component {
 
 
     handleLoginOpen = () => {
+        ym('reachGoal', YMHelper.YM_GOAL_OPEN_AUTH);
         this.setState({loginDialog: {open: true}})
     }
     handleLoginClose = () => {
@@ -119,7 +122,7 @@ class FitAuthContainer extends Component {
             } else {
 
             }
-
+            ym('reachGoal', YMHelper.YM_GOAL_AUTH);
         }).catch((error) => {
             console.error(error);
         });
@@ -227,6 +230,7 @@ class FitAuthContainer extends Component {
                 <Footer
                     handleDocumentDialog={this.handleDocumentDialog}
                 />
+                <YMInitializer accounts={[49394071]} />
             </div>
         );
     }
