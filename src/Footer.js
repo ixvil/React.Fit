@@ -13,6 +13,9 @@ class Footer extends React.Component {
         return (
             <Paper className='footer-paper'
             >
+                <Button
+                    onClick={() => this.props.handleDocumentDialog('contacts')}
+                >Контакты</Button>
                 <Button onClick={() => this.props.handleDocumentDialog('contract')}>Договор
                     присоединения</Button>
                 <Button onClick={() => this.props.handleDocumentDialog('refund')}>Возврат средств</Button>

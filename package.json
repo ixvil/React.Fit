@@ -26,6 +26,8 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^1.1.5",
+    "react-social-icons": "^3.0.0",
+    "react-social-media-icons": "^1.0.3",
     "react-text-mask": "^5.4.2",
     "react-yandex-metrika": "^2.4.2",
     "universal-cookie": "^2.2.0"

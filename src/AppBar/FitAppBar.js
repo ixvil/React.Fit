@@ -19,6 +19,7 @@ import {withStyles} from "@material-ui/core/styles/index";
 import FitQRCode from "./FitQRCode";
 import FitExpiration from "./FitExpiration";
 import {Phone} from "@material-ui/icons";
+import SocialMediaIcons from 'react-social-media-icons';
 import green from '@material-ui/core/colors/green';
 import YMHelper from "../Tools/YMHelper";
 import ym from 'react-yandex-metrika';
@@ -71,6 +72,13 @@ class FitAppBar extends React.Component {
             width: '3em',
             height: '3em',
 
+        },
+        fab_ig: {
+            position: 'fixed',
+            right: '3.1em',
+            top: '0em',
+            background: "none !important",
+            padding: "0.3em 1.3em"
         }
 
 
@@ -163,10 +171,6 @@ class FitAppBar extends React.Component {
                         {typo}
                         {this.getDrawer()}
                         {this.getLoginDialog()}
-                        <Button
-                            color="inherit"
-                            onClick={() => this.props.handleDocumentDialog('contacts')}
-                        >Контакты</Button>
 
                         <Button
                             className={classes.fab}
@@ -177,6 +181,27 @@ class FitAppBar extends React.Component {
                             }}
                         >
                             <Phone/>
+                        </Button>
+
+                        <Button
+                            className={classes.fab_ig}
+                        >
+                            <SocialMediaIcons
+                                // className={classes.fab_ig}
+                                icons={[
+                                    {
+                                        url: 'https://api.whatsapp.com/send?phone=79060180010&text=Приветствую',
+                                        className: 'fa-whatsapp'
+                                    },
+                                    {
+                                        url: 'https://www.instagram.com/stretchandgo/',
+                                        className: 'fa-instagram',
+                                    },
+
+                                ]}
+                                iconSize={'3.5em'}
+                                iconColor={'#FFFFFF'}
+                            />
                         </Button>
 
                     </Toolbar>
