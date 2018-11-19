@@ -87,3 +87,7 @@ a.phoneHref {
     float: left;
     margin: 10px;
 }
+
+.MuiToolbar-gutters-47 {
+    padding-left: 0 !important;
+}

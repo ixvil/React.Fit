@@ -7,7 +7,8 @@ import {
     IconButton, Button,
     MenuItem, TextField,
     Toolbar, AppBar,
-    Typography
+    Typography,
+    CircularProgress
 } from "@material-ui/core";
 import Menu from '@material-ui/icons/Menu';
 import ArrowBack from '@material-ui/icons/ArrowBack';
@@ -66,7 +67,7 @@ class FitAppBar extends React.Component {
         },
         fab: {
             position: 'fixed',
-            right: '1em',
+            right: '0.5em',
             backgroundColor: green[500],
             color: 'white',
             width: '3em',
@@ -75,7 +76,7 @@ class FitAppBar extends React.Component {
         },
         fab_ig: {
             position: 'fixed',
-            right: '3.1em',
+            right: '2.6em',
             top: '0em',
             background: "none !important",
             padding: "0.3em 1.3em"
@@ -101,7 +102,8 @@ class FitAppBar extends React.Component {
         welcomeForm: {
             open: false,
             showed: false
-        }
+        },
+        letsWait: false
     }
 
 
@@ -113,7 +115,10 @@ class FitAppBar extends React.Component {
     }
 
     handleCodeSending = () => {
-        this.setState({codeSent: true, phoneFrozen: true});
+        this.setState({codeSent: true, letsWait: true});
+        setTimeout(() => {
+            this.setState({letsWait: false});
+        }, 10000);
         ym('reachGoal', YMHelper.YM_GOAL_CODE_SENT);
         this.requestCode();
     }
@@ -337,13 +342,17 @@ class FitAppBar extends React.Component {
     }
 
     getLoginDialog() {
+        let getCode = 'Получить код';
+        let waitGetCode = <CircularProgress/>;
+
         return (
             <Dialog
                 open={this.props.loginDialog.open}
                 onClose={this.props.handleLoginClose}
                 fullWidth
             >
-                <DialogTitle id="form-dialog-title">{"Авторизация"}</DialogTitle>
+
+                <DialogTitle id="form-dialog-title">{"Вход"}</DialogTitle>
                 <DialogContent>
                     <div>
                         {this.getPhoneField()}
@@ -352,7 +361,7 @@ class FitAppBar extends React.Component {
                         <Button
                             disabled={!this.state.phone.valid}
                             onClick={this.handleCodeSending}
-                        >Получить код</Button>
+                        >{this.state.letsWait ? waitGetCode : getCode}</Button>
                     </div>
                     <div></div>
                     <div>
@@ -431,7 +440,7 @@ class FitAppBar extends React.Component {
                 helperText={this.state.phone.errorText ? this.state.phone.errorText : false}
                 error={this.state.phone.errorText ? true : false}
                 onChange={this.onChangePhone.bind(this)}
-                label="Введите номер телефона"
+                label="Ваш телефон"
                 disabled={this.state.phoneFrozen}
                 value={this.state.phone.phoneNumber}
                 fullWidth
