@@ -7,13 +7,13 @@ import {
     DialogActions,
     Button,
     List,
+    Typography,
     ListItem
 } from "@material-ui/core";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import {createMuiTheme} from "@material-ui/core/styles/index";
-
-import QrReader from "react-qr-reader";
 import LessonUserList from "./LessonUserList";
+import moment from "moment-timezone";
 
 class FitQRScanner extends React.Component {
 
@@ -29,20 +29,25 @@ class FitQRScanner extends React.Component {
                 <Dialog
                     open={this.props.open}
                     onClose={this.props.handleQRScannerClose}
+                    fullScreen
+                    maxWidth='md'
                 >
                     <DialogTitle>{this.props.lesson.lessonSet.lessonType.name}</DialogTitle>
                     <DialogContent>
+                        <Typography>
+                            {moment(new Date(this.props.lesson.startDateTime)).tz("Europe/Moscow").format('L LT')}
+                        </Typography>
                         <LessonUserList
                             lesson={this.props.lesson}
                             clickHandler={this.handleOnScan}
                             cancelClickHandler={this.handleCancelApplication}
                         />
-                        <QrReader
-                            style={{width: '240px', height: '240px'}}
-                            onScan={this.handleOnScan}
-                            onError={this.handleOnError}
-                            delay={1000}
-                        />
+                        {/*<QrReader*/}
+                            {/*style={{width: '240px', height: '240px'}}*/}
+                            {/*onScan={this.handleOnScan}*/}
+                            {/*onError={this.handleOnError}*/}
+                            {/*delay={1000}*/}
+                        {/*/>*/}
 
                     </DialogContent>
                     <DialogActions>
