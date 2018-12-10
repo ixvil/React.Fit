@@ -35,10 +35,12 @@ class FitQRScanner extends React.Component {
                         <LessonUserList
                             lesson={this.props.lesson}
                             clickHandler={this.handleOnScan}
+                            cancelClickHandler={this.handleCancelApplication}
                         />
                         <QrReader
                             style={{width: '240px', height: '240px'}}
                             onScan={this.handleOnScan}
+                            onError={this.handleOnError}
                             delay={1000}
                         />
 
@@ -85,6 +87,10 @@ class FitQRScanner extends React.Component {
         });
     }
 
+    handleOnError = (result) => {
+
+    }
+
     handleOnScan = (result) => {
         if (result === null) {
             return false;
@@ -111,6 +117,31 @@ class FitQRScanner extends React.Component {
         }).catch((error) => {
             console.error(error);
         });
+    }
+
+    handleCancelApplication = (lessonUserId) => {
+
+        fetch(this.props.config.url.host + this.props.config.url.lessonUserMethod + 'managerDelete',
+            {
+                'method': 'POST',
+                'credentials': 'include',
+                'headers': {'Accept': 'application/json'},
+                'body': JSON.stringify({
+                    "lessonUserId": lessonUserId
+                })
+            }
+        ).then(function (response) {
+            return response.json();
+        }).then((data) => {
+            if (typeof data.error !== "undefined") {
+                console.log(data.error);
+            } else {
+                this.props.setLessonHandler(data.lesson);
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+
     }
 }
 

@@ -381,8 +381,8 @@ class FitGridList extends React.Component {
     getGridList() {
         if (Object.keys(this.state.lessons).length === 0) {
             return [
-                <CircularProgress/>,
-                <LinearProgress/>
+                <CircularProgress key={"CircularProgress"}/>,
+                <LinearProgress key={"LinearProgress"}/>
             ];
         }
         return (

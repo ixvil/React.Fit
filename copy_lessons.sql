@@ -1,0 +1,1 @@
+insert into lesson  select null, hall_id, lesson_set_id, from_unixtime( unix_timestamp(start_date_time) + 604800 ), null from lesson where start_date_time > '2018-11-05';

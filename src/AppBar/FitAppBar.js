@@ -103,7 +103,8 @@ class FitAppBar extends React.Component {
             open: false,
             showed: false
         },
-        letsWait: false
+        letsWait: false,
+        expirationOpen: false
     }
 
 
@@ -296,8 +297,8 @@ class FitAppBar extends React.Component {
 
     getAdminMenu() {
         return [
-            <MenuItem onClick={this.handleExpirationOpen}>Заканчивающиеся абонементы</MenuItem>,
-            <Divider/>
+            <MenuItem onClick={this.handleExpirationOpen} key={"menuItem"}>Заканчивающиеся абонементы</MenuItem>,
+            <Divider key={"divider"}/>
         ];
     }
 

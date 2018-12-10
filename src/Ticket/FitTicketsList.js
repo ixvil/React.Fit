@@ -119,7 +119,7 @@ class FitTicketsList extends React.Component {
                                         ? <span className={classes.isActiveSpan}>Активен</span>
                                         : <span className={classes.isNotActiveSpan}>Не активен</span>
                                     } <br/>
-                                    Истекает до {expireDate.format('DD.MM.YYYY')}
+                                    {userTicket.lessonUsers.length > 0 ? 'Истекает' : 'Активировать' } до {expireDate.format('DD.MM.YYYY')}
                                 </Typography>
                                 <Typography className={classes.default}>
                                     Ост:{userTicket.lessonsExpires} <br/>

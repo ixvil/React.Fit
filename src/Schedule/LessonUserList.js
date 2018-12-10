@@ -5,25 +5,27 @@ import {
     ListSubheader,
     ListItemIcon,
     ListItemText,
-    Divider
+    IconButton,
+    ListItemSecondaryAction
 } from "@material-ui/core";
 import {
-    Done, Close
+    Done, Close, Cancel
 } from "@material-ui/icons";
 
 class LessonUserList extends React.Component {
     render() {
         const count = this.props.lesson.lessonUsers.length;
 
-        let done = <ListItemIcon><Done style={{"color": "#00FF00"}}/></ListItemIcon>;
-        let cancel = <ListItemIcon><Close style={{"color": "#FF0000"}}/></ListItemIcon>;
+        let done = <Done style={{"color": "#00FF00"}}/>;
+        let cancel = <Close style={{"color": "#FF0000"}}/>;
+        let none = <Done style={{"color": "#FFFFFF"}}/>;
 
         return (
             <List
 
             >
 
-                <ListSubheader>{count > 0 ? "Клиенты" : "Никто не записан"}</ListSubheader>
+                <ListSubheader>{count > 0 ? "" : "Никто не записан"}</ListSubheader>
                 {this.props.lesson.lessonUsers.map((lessonUser) => {
                         let button;
                         if (lessonUser.status.id === 3) {
@@ -31,7 +33,7 @@ class LessonUserList extends React.Component {
                         } else if (lessonUser.status.id === 2) {
                             button = done;
                         } else {
-                            button = null;
+                            button = none;
                         }
                         return (
                             <ListItem
@@ -42,8 +44,24 @@ class LessonUserList extends React.Component {
                                     }
                                 }}
                             >
+
+                                <ListItemIcon>
+                                    {button}
+                                </ListItemIcon>
                                 <ListItemText>{lessonUser.user.name}<br/>{lessonUser.user.phone} </ListItemText>
-                                {button}
+
+                                <ListItemSecondaryAction>
+                                    <IconButton
+                                        aria-label="Delete"
+                                        onClick={() => {
+                                            if (window.confirm(lessonUser.user.name + " отменить запись?")) {
+                                                this.props.cancelClickHandler(lessonUser.id);
+                                            }
+                                        }}
+                                    >
+                                        <Cancel/>
+                                    </IconButton>
+                                </ListItemSecondaryAction>
                             </ListItem>
                         );
                     }

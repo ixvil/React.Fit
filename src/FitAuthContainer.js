@@ -230,7 +230,7 @@ class FitAuthContainer extends Component {
                 <Footer
                     handleDocumentDialog={this.handleDocumentDialog}
                 />
-                <YMInitializer accounts={[49394071]} />
+                <YMInitializer accounts={[49394071]}/>
             </div>
         );
     }

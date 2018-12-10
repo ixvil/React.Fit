@@ -69,8 +69,9 @@ class FitTickets extends React.Component {
                             </Typography>
                         </Toolbar>
                     </AppBar>
-                    {this.getTicketPlansList()}
                     <DialogContent>
+                    {this.getTicketPlansList()}
+
                         <FitAloneSwitch
                             onChange={this.handleChangeUseBonus}
                             checked={this.state.useBonus}
