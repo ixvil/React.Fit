@@ -52,6 +52,14 @@ class FitQRScanner extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
+                            let phone = window.prompt('Кого хотите добавить?');
+                            if (phone.length > 0) {
+                                this.addUser(this.props.lesson, phone);
+                            }
+                        }}>
+                            Добавить
+                        </Button>
+                        <Button onClick={() => {
                             let count = window.prompt('Сколько всего мест будет на этом занятии?');
                             if (count === '0' || count >= 1) {
                                 this.closeLesson(this.props.lesson, count);
@@ -66,6 +74,30 @@ class FitQRScanner extends React.Component {
                 </Dialog>
             </MuiThemeProvider>
         );
+    }
+
+    addUser = (lesson, phone) => {
+
+        fetch(this.props.config.url.host + this.props.config.url.addUser, {
+                'method': 'POST',
+                'headers': {'Accept': 'application/json'},
+                'credentials': 'include',
+                'body': JSON.stringify({
+                    "lessonId": lesson.id,
+                    "phone": phone
+                })
+            }
+        ).then(function (response) {
+            return response.json();
+        }).then((data) => {
+            if (typeof data.error !== "undefined") {
+                alert(data.error);
+            } else {
+                this.props.setLessonHandler(data.lesson);
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
     }
 
     closeLesson = (lesson, count) => {

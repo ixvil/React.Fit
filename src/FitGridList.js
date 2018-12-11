@@ -107,6 +107,7 @@ class FitGridList extends React.Component {
     }
     handleQRScannerClose = () => {
         this.setState({QRScannerOpen: false});
+        this.getLessons();
     }
 
 

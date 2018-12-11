@@ -38,6 +38,7 @@ class FitAuthContainer extends Component {
             'welcomeFormMethod': 'user/welcome/',
             'checkUserQR': 'lessonUser/check',
             'closeLesson': 'lesson/close',
+            'addUser': 'lessonUser/managerAdd',
             'getTicketPlans': 'ticketPlan/',
             'expiratingTickets': 'userTicket/expiration/'
         }
