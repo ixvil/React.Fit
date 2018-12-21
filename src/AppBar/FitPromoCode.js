@@ -49,6 +49,7 @@ class FitPromoCode extends React.Component {
             if (typeof data.error !== "undefined") {
                 alert(data.error);
             } else {
+                alert('Промокод введен успешно');
                 this.props.handleSetUser(data);
                 this.props.handleClose();
             }
