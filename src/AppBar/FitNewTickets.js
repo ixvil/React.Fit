@@ -12,7 +12,7 @@ import {
     DialogContent, MuiThemeProvider, createMuiTheme, withStyles
 } from '@material-ui/core';
 import {Close} from '@material-ui/icons';
-import Expiration from "../Tools/Expiration";
+import moment from "moment/moment";
 const styles = {
     appBar: {
         position: 'relative',
@@ -71,7 +71,7 @@ class FitNewTickets extends React.Component {
                                             </Typography>
                                             <Typography>
                                                 {ticket.isActive === true ? "Активен" : "Не активен"}
-                                                {", законч. " + Expiration.getDate(ticket).format('DD.MM.YYYY')}
+                                                {", куплен. " + (moment(ticket.dateCreatedAt)).format('DD.MM.YYYY')}
                                             </Typography>
                                             <Typography>
                                                 {ticket.ticketPlan.name}
