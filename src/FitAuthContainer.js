@@ -40,7 +40,8 @@ class FitAuthContainer extends Component {
             'closeLesson': 'lesson/close',
             'addUser': 'lessonUser/managerAdd',
             'getTicketPlans': 'ticketPlan/',
-            'expiratingTickets': 'userTicket/expiration/'
+            'expiratingTickets': 'userTicket/expiration/',
+            'newTickets': 'userTicket/new/'
         }
     }
 

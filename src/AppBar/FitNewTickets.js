@@ -21,7 +21,7 @@ const styles = {
         flex: 1,
     },
 };
-class FitExpiration extends React.Component {
+class FitNewTickets extends React.Component {
 
     whiteBaseTheme = createMuiTheme({
         palette: {
@@ -56,7 +56,7 @@ class FitExpiration extends React.Component {
                                 <Close/>
                             </IconButton>
                             <Typography variant="title" color="inherit">
-                                Заканчивающиеся абонементы
+                                Новые абонементы
                             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -92,7 +92,7 @@ class FitExpiration extends React.Component {
     }
 
     getExpiratingTickets = () => {
-        fetch(this.props.config.url.host + this.props.config.url.expiratingTickets,
+        fetch(this.props.config.url.host + this.props.config.url.newTickets,
             {
                 'method': 'GET',
                 'headers': {'Accept': 'application/json'},
@@ -114,4 +114,4 @@ class FitExpiration extends React.Component {
     }
 }
 
-export  default withStyles(styles)(FitExpiration);
+export  default withStyles(styles)(FitNewTickets);

@@ -24,6 +24,7 @@ import SocialMediaIcons from 'react-social-media-icons';
 import green from '@material-ui/core/colors/green';
 import YMHelper from "../Tools/YMHelper";
 import ym from 'react-yandex-metrika';
+import FitNewTickets from "./FitNewTickets";
 
 class FitAppBar extends React.Component {
 
@@ -104,7 +105,8 @@ class FitAppBar extends React.Component {
             showed: false
         },
         letsWait: false,
-        expirationOpen: false
+        expirationOpen: false,
+        newTicketsOpen: false
     }
 
 
@@ -235,6 +237,12 @@ class FitAppBar extends React.Component {
                     handleClose={this.handleExpirationClose}
                     config={this.props.config}
                 />
+                <FitNewTickets
+                    open={this.state.newTicketsOpen}
+                    handleOpen={this.handleNewTicketsOpen}
+                    handleClose={this.handleNewTicketsClose}
+                    config={this.props.config}
+                />
             </div>
 
         );
@@ -298,10 +306,22 @@ class FitAppBar extends React.Component {
     getAdminMenu() {
         return [
             <MenuItem onClick={this.handleExpirationOpen} key={"menuItem"}>Заканчивающиеся абонементы</MenuItem>,
+            <MenuItem onClick={this.handleNewTicketsOpen} key={"menuItem2"}>Новые абонементы</MenuItem>,
             <Divider key={"divider"}/>
         ];
     }
 
+    handleNewTicketsOpen = () => {
+        this.setState({
+            newTicketsOpen: true
+        });
+    }
+
+    handleNewTicketsClose = () => {
+        this.setState({
+            newTicketsOpen: false
+        });
+    }
     handleExpirationOpen = () => {
         this.setState({
             expirationOpen: true
