@@ -67,7 +67,7 @@ class LogoBlock extends Component {
                     {/*</Button>*/}
                 </div>
             </GridListTile>
-            <GridListTile><img style={{width: 250}} src={"/strlogo_black.jpg"} alt={"Stretch & GO"}/>
+            <GridListTile><img style={{width: 250}} src={"/strlogo_black.png"} alt={"Stretch & GO"}/>
             </GridListTile>
             <GridListTile cols={textCols}>
                 <div
@@ -100,7 +100,7 @@ class LogoBlock extends Component {
                     cellHeight={250}
                     style={{marginBottom: 100}}
                 >
-                    <GridListTile><img style={{width: 250}} src={"/strlogo_black.jpg"} alt={"Stretch & GO"}/>
+                    <GridListTile><img style={{width: 250}} src={"/strlogo_black.png"} alt={"Stretch & GO"}/>
                     </GridListTile>
 
 
