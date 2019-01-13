@@ -17,7 +17,7 @@ import {
     GridList,
     GridListTile,
     IconButton,
-    GridListTileBar
+    GridListTileBar, withStyles, createMuiTheme, MuiThemeProvider, AppBar
 } from "@material-ui/core";
 import {Add, Done, PlaylistAddCheck} from '@material-ui/icons'
 import moment from "moment-timezone";
@@ -28,7 +28,37 @@ import FitQRScanner from "./Schedule/FitQRScanner";
 import ym from "react-yandex-metrika";
 import YMHelper from "./Tools/YMHelper";
 
+const styles = {
+    headTile: {
+        color: '#ffffff',
+        background: 'rgb(72, 72, 72) !important',
+        paddingTop: "2px"
+    },
+    tileLessonName: {
+        color: '#ffffff',
+        background: '#b72f2f !important',
+        whiteSpace: 'normal',
+        paddingLeft: '0.3em',
+        maxHeight: '46px'
+
+    },
+    lessonTileRoot: {
+        border: 'solid 1px'
+    },
+    lessonTile: {
+        color: '#000000 !important',
+        background: 'none !important',
+    }
+
+};
+
 class FitGridList extends React.Component {
+
+    whiteBaseTheme = createMuiTheme({
+
+    });
+
+    classes;
 
     url = {
         'host': process.env.REACT_APP_API_HOST,
@@ -38,6 +68,7 @@ class FitGridList extends React.Component {
 
     constructor(props) {
         super(props);
+        this.classes = this.props.classes;
         moment.locale('ru');
         this.fillDays();
         this.getLessons();
@@ -270,21 +301,28 @@ class FitGridList extends React.Component {
                 key={'key_' + lesson.id}
                 rows={2}
                 id={lesson.id}
+                className={this.classes.lessonTileRoot}
             >
                 <img src={lesson.lessonSet.lessonType.image} alt=''/>
                 <GridListTileBar
                     title={moment(new Date(lesson.startDateTime)).tz("Europe/Moscow").format('LT') + ' ' + lesson.hall.name}
                     titlePosition="top"
                     actionIcon={iconButton}
+                    className={this.classes.lessonTile}
                     subtitle={
                         <span>
                             <br/>{lesson.lessonSet.trainerUser.name}
                         </span>}
                 />
                 <GridListTileBar
-                    title={lesson.lessonSet.lessonType.name}
+                    title={
+                        <div className={this.classes.tileLessonName}>
+                            {lesson.lessonSet.lessonType.name}
+                        </div>
+                    }
                     titlePosition="bottom"
                     subtitle={freePlacesText}
+                    className={this.classes.lessonTile}
                 />
             </GridListTile>
         );
@@ -336,7 +374,7 @@ class FitGridList extends React.Component {
         </Dialog>;
 
         return (
-            <div>
+            <MuiThemeProvider theme={this.whiteBaseTheme}>
                 <div style={this.styles.root}>
                     {this.getGridList()}
                 </div>
@@ -354,7 +392,7 @@ class FitGridList extends React.Component {
                     lesson={this.state.dialog}
                     config={this.props.config}
                 />
-            </div>
+            </MuiThemeProvider>
         );
     }
 
@@ -399,12 +437,13 @@ class FitGridList extends React.Component {
                     return (
                         <GridListTile
                             key={'card_' + day.key}
+                            className={this.classes.lessonTileRoot}
                         >
                             <GridListTileBar
                                 style={this.styles.headerGridList}
                                 title={day.day}
                                 subtitle={day.date}
-
+                                className={this.classes.headTile}
                             />
                         </GridListTile>
                     );
@@ -509,4 +548,4 @@ class FitGridList extends React.Component {
 }
 
 
-export default FitGridList;
+export default withStyles(styles)(FitGridList);
