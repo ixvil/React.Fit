@@ -91,3 +91,19 @@ a.phoneHref {
 .MuiToolbar-gutters-47 {
     padding-left: 0 !important;
 }
+
+.MuiGridListTileBar-root-331 {
+    background: none !important;
+}
+
+.MuiGridListTile-tile-328 {
+    background: #b72f2f;
+}
+
+div[class*="FitGridList-lessonTile"] > div {
+    color: inherit;
+}
+
+li[class*="FitGridList-lessonTile"] {
+    padding: 0 !important;
+}
