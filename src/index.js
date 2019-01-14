@@ -36,6 +36,7 @@ class Fit extends React.Component {
 ReactDOM.render(
     <BrowserRouter>
         <div>
+            <Route exact path="/schedule" component={Fit}/>
             <Route exact path="/" component={Fit}/>
             <Route path="/documents/:documentId" component={Fit}/>
         </div>
