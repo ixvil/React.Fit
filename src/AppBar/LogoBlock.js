@@ -29,7 +29,6 @@ class LogoBlock extends Component {
 
         let cols = 5;
         let textCols = 2;
-        let fullVis = true;
 
         if (window.innerWidth < 1300) {
             cols = 3;

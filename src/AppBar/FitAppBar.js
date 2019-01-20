@@ -1,6 +1,6 @@
-import * as React from "react/cjs/react.development";
+import React from "react";
 import {
-    Avatar,
+    Avatar, Fab,
     Card, CardHeader, CardContent,
     Dialog, DialogContent, DialogTitle,
     Divider, Drawer,
@@ -27,10 +27,6 @@ import ym from 'react-yandex-metrika';
 import FitNewTickets from "./FitNewTickets";
 
 class FitAppBar extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     static styles = {
         drawerHeader: {
@@ -68,7 +64,7 @@ class FitAppBar extends React.Component {
         },
         fab: {
             position: 'fixed',
-            right: '0.5em',
+            right: '2em',
             backgroundColor: green[500],
             color: 'white',
             width: '3em',
@@ -77,8 +73,8 @@ class FitAppBar extends React.Component {
         },
         fab_ig: {
             position: 'fixed',
-            right: '2.6em',
-            top: '0em',
+            right: '4.1em',
+            //top: '0em',
             background: "none !important",
             padding: "0.3em 1.3em"
         }
@@ -141,7 +137,7 @@ class FitAppBar extends React.Component {
 
     render() {
         const {classes} = this.props;
-        if (this.props.user.login === true && this.props.user.user.name === '' && this.state.welcomeForm.showed == false) {
+        if (this.props.user.login === true && this.props.user.user.name === '' && this.state.welcomeForm.showed === false) {
             this.setState({
                 welcomeForm: {
                     open: true,
@@ -163,12 +159,12 @@ class FitAppBar extends React.Component {
                 <Person/>
             </IconButton>;
         }
-        let typo = <Typography variant="title">Stretch&GO</Typography>;
+        let typo = <Typography variant="h6">Stretch&GO</Typography>;
         if (this.props.user.login === false) {
             if (window.innerWidth < 950) {
-                typo = <Typography variant="title" onClick={this.props.handleLoginOpen}>Войти</Typography>;
+                typo = <Typography variant="h6" onClick={this.props.handleLoginOpen}>Войти</Typography>;
             } else {
-                typo = <Typography variant="title" onClick={this.props.handleLoginOpen}>Личный кабинет</Typography>;
+                typo = <Typography variant="h6" onClick={this.props.handleLoginOpen}>Личный кабинет</Typography>;
             }
         }
         return (
@@ -180,16 +176,15 @@ class FitAppBar extends React.Component {
                         {this.getDrawer()}
                         {this.getLoginDialog()}
 
-                        <Button
+                        <Fab
                             className={classes.fab}
-                            variant={"fab"}
                             onClick={() => {
                                 ym('reachGoal', YMHelper.YM_GOAL_CALL);
                                 window.location.href = 'tel:+7(906)0180010';
                             }}
                         >
                             <Phone/>
-                        </Button>
+                        </Fab>
 
                         <Button
                             className={classes.fab_ig}
@@ -433,12 +428,12 @@ class FitAppBar extends React.Component {
     }
 
     formatPhone(value) {
+        console.log(value);
         let newValue = '+7(';
         let numRegexp = /[0-9]/ig;
         let number;
         let i = 3;
-        let devNull = numRegexp.exec(value);
-
+        value = value.substr(3);
         while (number = numRegexp.exec(value)) {
 
             if (i === 6) {
@@ -504,7 +499,7 @@ class FitAppBar extends React.Component {
             }
             return ticket.lessonsExpires;
         });
-        if (countTickets.length == 0) {
+        if (countTickets.length === 0) {
             return 0;
         }
         return countTickets.reduce(ArrayTools.sum);

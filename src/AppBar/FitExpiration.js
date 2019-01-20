@@ -1,10 +1,8 @@
 import React from 'react';
 import {
     Dialog,
-    Card, CardContent, CardHeader,
     List, ListItemText,
     ListItem,
-    ListSubheader,
     AppBar,
     Toolbar,
     IconButton,
@@ -55,7 +53,7 @@ class FitExpiration extends React.Component {
                             <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
                                 <Close/>
                             </IconButton>
-                            <Typography variant="title" color="inherit">
+                            <Typography variant="h6" color="inherit">
                                 Заканчивающиеся абонементы
                             </Typography>
                         </Toolbar>
@@ -64,7 +62,7 @@ class FitExpiration extends React.Component {
                         <List>
                             {this.state.expiratingTickets.map((ticket) => {
                                 return (
-                                    <ListItem>
+                                    <ListItem key={ticket.id}>
                                         <ListItemText>
                                             <Typography>
                                                 {ticket.user.phone} ({ticket.user.name})
@@ -107,7 +105,6 @@ class FitExpiration extends React.Component {
 
                 });
             }
-            console.log(data);
         }).catch((error) => {
             console.error(error);
         });

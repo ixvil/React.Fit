@@ -16,10 +16,6 @@ class FitPromoCode extends React.Component {
         'promoCodeMethod': 'promoCode/',
     }
 
-    constructor(props) {
-        super(props);
-    }
-
     state = {
         'open': false,
         'promoCode': ''

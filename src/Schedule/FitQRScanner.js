@@ -1,14 +1,11 @@
 import React from "react";
 import {
-    Divider,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
     Button,
-    List,
-    Typography,
-    ListItem
+    Typography
 } from "@material-ui/core";
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
 import {createMuiTheme} from "@material-ui/core/styles/index";

@@ -64,7 +64,7 @@ class FitTickets extends React.Component {
                             <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
                                 <CloseIcon/>
                             </IconButton>
-                            <Typography variant="title" color="inherit" className={classes.flex}>
+                            <Typography variant="h6" color="inherit" className={classes.flex}>
                                 Купить абонемент
                             </Typography>
                         </Toolbar>
@@ -99,7 +99,7 @@ class FitTickets extends React.Component {
 
     getTicketPlansList = () => {
         return (
-            <List key={0}>
+            <List>
                 {this.state.ticketPlans.map((ticketPlan) => {
                     let secondary = ticketPlan.price;
                     if (ticketPlan.oldPrice !== null) {
@@ -115,7 +115,7 @@ class FitTickets extends React.Component {
                                 secondary={secondary}
                             />
                         </ListItem>,
-                        <Divider/>
+                        <Divider key={ticketPlan.id+'div'} />
                     ];
                 })}
             </List>
@@ -139,7 +139,7 @@ class FitTickets extends React.Component {
                 ticketPlans: data.ticketPlans,
                 useBonus: useBonus
             });
-            console.log(data);
+
         }).catch((error) => {
             console.error(error);
         });

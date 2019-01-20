@@ -29,10 +29,6 @@ class FitSnackBarContentWrapper extends React.Component {
 
     message;
 
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <SnackbarContent

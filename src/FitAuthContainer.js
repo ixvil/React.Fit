@@ -10,7 +10,6 @@ import FitSnackBarContentWrapper from "./Tools/FitSnackBarContentWrapper";
 import Cookies from 'universal-cookie'
 import FitTickets from "./Ticket/FitTickets";
 import DocumentDialog from "./Documents/DocumentDialog";
-import {createMuiTheme} from "@material-ui/core/styles/index";
 import Footer from "./Footer";
 import FitTicketsList from "./Ticket/FitTicketsList";
 import {YMInitializer} from 'react-yandex-metrika';
@@ -115,11 +114,13 @@ class FitAuthContainer extends Component {
 
                 this.cookies.set('authToken', data.token, {
                     domain: process.env.COOKIE_DOMAIN,
-                    expires: new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000)
+                    expires: new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000),
+                    path: '/'
                 });
                 this.cookies.set('authUserId', data.user.id, {
                     domain: process.env.COOKIE_DOMAIN,
-                    expires: new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000)
+                    expires: new Date(new Date().getTime() + 60 * 60 * 24 * 30 * 1000),
+                    path: '/'
                 });
             } else {
 
@@ -132,8 +133,14 @@ class FitAuthContainer extends Component {
 
     handleLogout() {
         this.setState({login: false});
-        this.cookies.remove('authToken', {domain: process.env.COOKIE_DOMAIN});
-        this.cookies.remove('authUserId', {domain: process.env.COOKIE_DOMAIN});
+        this.cookies.remove('authToken', {
+            domain: process.env.COOKIE_DOMAIN,
+            path: '/'
+        });
+        this.cookies.remove('authUserId', {
+            domain: process.env.COOKIE_DOMAIN,
+            path: '/'
+        });
     }
 
     tokenAuth() {

@@ -2,7 +2,6 @@ import React from "react";
 
 import {
     FormControl,
-    FormLabel,
     FormGroup,
     FormControlLabel,
     Switch

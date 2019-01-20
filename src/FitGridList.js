@@ -1,10 +1,5 @@
 import React from "react";
 import {
-    Card,
-    CardMedia,
-    CardHeader,
-    CardActions,
-    CardContent,
     LinearProgress,
     Dialog,
     DialogTitle,
@@ -17,7 +12,7 @@ import {
     GridList,
     GridListTile,
     IconButton,
-    GridListTileBar, withStyles, createMuiTheme, MuiThemeProvider, AppBar
+    GridListTileBar, withStyles, createMuiTheme, MuiThemeProvider
 } from "@material-ui/core";
 import {Add, Done, PlaylistAddCheck} from '@material-ui/icons'
 import moment from "moment-timezone";
@@ -30,12 +25,11 @@ import YMHelper from "./Tools/YMHelper";
 
 const styles = {
     headTile: {
-        color: '#ffffff',
+         color: '#000000',
         background: 'rgb(72, 72, 72) !important',
         paddingTop: "2px"
     },
     tileLessonName: {
-        color: '#ffffff',
         background: '#b72f2f !important',
         whiteSpace: 'normal',
         paddingLeft: '0.3em',
@@ -43,7 +37,7 @@ const styles = {
 
     },
     lessonTileRoot: {
-        border: 'solid 1px'
+        border: 'solid 1px',
     },
     lessonTile: {
         color: '#000000 !important',
@@ -260,10 +254,10 @@ class FitGridList extends React.Component {
         const canApply = (limit - lesson.lessonUsers.length) > 0;
 
         if (canApply && this.props.user.user.type.id === 3) {
-            iconButton = <IconButton>
-                <Add onClick={() => {
-                    this.handleOpen(lesson);
-                }}/>
+            iconButton = <IconButton onClick={() => {
+                this.handleOpen(lesson);
+            }}>
+                <Add />
 
             </IconButton>;
         }
@@ -274,23 +268,26 @@ class FitGridList extends React.Component {
 
 
         if (this.checkApplied(this.props.user.user.id, lesson.lessonUsers)) {
-            iconButton = <IconButton>
+            iconButton = <IconButton
+                onClick={() => {
+                    this.handleCancelOpen(lesson);
+                }}
+            >
                 <Done
                     style={{"color": "#00FF00"}}
-                    onClick={() => {
-                        this.handleCancelOpen(lesson);
-                    }}
                 />
 
             </IconButton>;
         }
 
         if (this.props.user.user.id === lesson.lessonSet.trainerUser.id || this.props.user.user.type.id === 1) {
-            iconButton = <IconButton>
+            iconButton = <IconButton
+                onClick={() => {
+                    this.handleQRScannerOpen(lesson)
+                }}
+            >
                 <PlaylistAddCheck
-                    onClick={() => {
-                        this.handleQRScannerOpen(lesson)
-                    }}
+
                 />
             </IconButton>;
         }
@@ -302,15 +299,22 @@ class FitGridList extends React.Component {
                 rows={2}
                 id={lesson.id}
                 className={this.classes.lessonTileRoot}
+                style={{
+                    padding: '0'
+                }}
             >
                 <img src={lesson.lessonSet.lessonType.image} alt=''/>
                 <GridListTileBar
-                    title={moment(new Date(lesson.startDateTime)).tz("Europe/Moscow").format('LT') + ' ' + lesson.hall.name}
+                    title={
+                        <span style={{color:"black"}}>
+                            {moment(new Date(lesson.startDateTime)).tz("Europe/Moscow").format('LT') + ' ' + lesson.hall.name}
+                        </span>
+                    }
                     titlePosition="top"
                     actionIcon={iconButton}
                     className={this.classes.lessonTile}
                     subtitle={
-                        <span>
+                        <span style={{color:"black"}}>
                             <br/>{lesson.lessonSet.trainerUser.name}
                         </span>}
                 />
@@ -321,7 +325,11 @@ class FitGridList extends React.Component {
                         </div>
                     }
                     titlePosition="bottom"
-                    subtitle={freePlacesText}
+                    subtitle={
+                        <span style={{color: "black"}}>
+                            {freePlacesText}
+                        </span>
+                    }
                     className={this.classes.lessonTile}
                 />
             </GridListTile>
@@ -341,6 +349,7 @@ class FitGridList extends React.Component {
                 src={this.state.dialog.lessonSet.photo}
                 title="Trainer photo"
                 className="trainerPhoto"
+                alt="Trainer"
             />;
         }
 
@@ -438,6 +447,9 @@ class FitGridList extends React.Component {
                         <GridListTile
                             key={'card_' + day.key}
                             className={this.classes.lessonTileRoot}
+                            style={{
+                                padding: '0'
+                            }}
                         >
                             <GridListTileBar
                                 style={this.styles.headerGridList}

@@ -32,6 +32,7 @@ class Fit extends React.Component {
 }
 
 // ========================================
+window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
 
 ReactDOM.render(
     <BrowserRouter>

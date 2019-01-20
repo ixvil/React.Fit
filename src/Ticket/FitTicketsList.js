@@ -69,7 +69,6 @@ class FitTicketsList extends React.Component {
 
     render() {
         const {classes} = this.props;
-        console.log(this.props.user);
         let dialogContent;
         if (typeof this.props.user.userTickets === 'undefined' || this.props.user.userTickets.length === 0) {
             dialogContent =
@@ -149,7 +148,7 @@ class FitTicketsList extends React.Component {
                             <IconButton color="inherit" onClick={this.props.handleClose} aria-label="Close">
                                 <Close/>
                             </IconButton>
-                            <Typography variant="title" color="inherit">
+                            <Typography variant="h6" color="inherit">
                                 Ваши абонементы
                             </Typography>
                         </Toolbar>
