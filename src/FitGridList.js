@@ -263,7 +263,7 @@ class FitGridList extends React.Component {
         }
         const freePlacesText = canApply
             ? 'Осталось ' + (limit - lesson.lessonUsers.length) + ' мест'
-            : (<b>Мест нет</b>)
+            : ((new Date(lesson.startDateTime).getDate() == new Date('2019-03-08').getDate())?(<b>Запись у администратора</b>):(<b>Мест нет</b>))
         ;
 
 
